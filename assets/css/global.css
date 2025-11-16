@@ -57,6 +57,18 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.right {
+  flex-grow: 1;
+  margin-right: 16px;
+}
+
 /* Utility color classes */
 .text-primary {
   color: var(--color-primary);
@@ -75,7 +87,6 @@ h1,
   font-weight: var(--fw-bold); /* Mulish Bold */
   font-size: var(--fs-h1);
   line-height: var(--lh-headline);
-  margin: 0 0 0.5rem 0;
   letter-spacing: -0.02em;
 }
 
@@ -85,7 +96,7 @@ h2,
   font-weight: var(--fw-semibold); /* Mulish SemiBold */
   font-size: var(--fs-h2);
   line-height: var(--lh-headline);
-  margin: 0 0 0.5rem 0;
+  margin-bottom: 0.5rem;
 }
 
 h3,
@@ -94,7 +105,6 @@ h3,
   font-weight: var(--fw-semibold); /* Mulish SemiBold */
   font-size: var(--fs-h3);
   line-height: var(--lh-headline);
-  margin: 0 0 0.5rem 0;
 }
 
 h4,
@@ -103,16 +113,14 @@ h4,
   font-weight: var(--fw-semibold); /* Mulish SemiBold */
   font-size: var(--fs-h4);
   line-height: var(--lh-headline);
-  margin: 0 0 0.5rem 0;
 }
 
-.subhead,
-.lead {
+h5,
+.subhead {
   font-family: var(--font-sans-mulish);
   font-weight: var(--fw-medium); /* Mulish Medium */
   font-size: var(--fs-subhead);
   line-height: var(--lh-body);
-  margin: 0 0 0.5rem 0;
 }
 
 p,
@@ -121,7 +129,6 @@ p,
   font-weight: var(--fw-regular); /* Roboto Regular */
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  margin: 0 0 1rem 0;
 }
 
 .caption,
