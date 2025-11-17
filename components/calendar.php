@@ -10,9 +10,10 @@ require_once __DIR__ . '/../includes/head.php';
 <head>
     <link rel="stylesheet" href="/Ember/assets/css/calendar.css">
     <script src="/Ember/assets/js/calendar.js" defer></script>
+    <script src="https://apis.google.com/js/api.js"></script>
 </head>
 
-<body>
+<body onload="gapiInit()">
     <div id="calendar">
         <h2 id="setDate"></h2>
         <div class="calendar_header">
