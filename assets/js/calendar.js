@@ -133,3 +133,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderCalendar();
 });
+
+// Calendar API 
+const CLIENT_ID = "409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
+const API_KEY = "AIzaSyDT-iOvQSyMCMswPI94LQBPg8Afibdje28";
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+
+function gapiInit() {
+    gapi.load("client:auth2", () => {
+        gapi.client.init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            scope: SCOPES,
+            discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
+        });
+    });
+}
+
+// Ex.
+function createEvent() {
+    const event = {
+        summary: "Meeting with Team",
+        location: "Online",
+        description: "Discuss project updates",
+        start: {
+            dateTime: "2025-01-01T10:00:00+08:00",
+            timeZone: "Asia/Manila",
+        },
+        end: {
+            dateTime: "2025-01-01T11:00:00+08:00",
+            timeZone: "Asia/Manila",
+        },
+    };
+
+    gapi.client.calendar.events.insert({
+        calendarId: "primary",
+        resource: event,
+    }).then(response => {
+        console.log("Event created:", response);
+        alert("Event created! 🎉");
+    });
+}
