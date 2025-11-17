@@ -10,6 +10,7 @@
 
 /* Design tokens */
 :root {
+  scroll-behavior: smooth;
   /* Colors */
   --color-primary: #169dd9;
   --color-secondary: #bdffff;
@@ -19,6 +20,14 @@
   --color-gray: #bababa;
   --color-selected-bg: #3f3f3f;
 
+  /* Font stacks */
+  --font-sans-mulish: "Mulish", system-ui, -apple-system, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
+  --font-sans-roboto: "Roboto", system-ui, -apple-system, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
   /* Type scale (base 16px) */
   --fs-caption: 0.75rem; /* 12px */
   --fs-body: 1rem; /* 16px */
@@ -33,18 +42,24 @@
   --lh-body: 1.55;
   --lh-headline: 1.15;
 
-  /* Font stacks */
-  --font-sans-mulish: "Mulish", system-ui, -apple-system, "Segoe UI",
-    "Helvetica Neue", Arial, sans-serif;
-  --font-sans-roboto: "Roboto", system-ui, -apple-system, "Segoe UI",
-    "Helvetica Neue", Arial, sans-serif;
-
   /* Weight aliases */
   --fw-light: 300;
   --fw-regular: 400;
   --fw-medium: 500;
   --fw-semibold: 600;
   --fw-bold: 700;
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --fs-caption: 0.75rem; /* 12px  */
+    --fs-body: 0.875rem; /* 14px */
+    --fs-subhead: 1rem; /* 16px */
+    --fs-h4: 1.25rem; /* 20px */
+    --fs-h3: 1.5rem; /* 24px */
+    --fs-h2: 1.75rem; /* 28px */
+    --fs-h1: 2.25rem; /* 36px */
+  }
 }
 
 /* Global styles */

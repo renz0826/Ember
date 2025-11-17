@@ -1,10 +1,9 @@
 #calendar {
   display: block;
   width: 100%;
-  min-height: 440px;
   background-color: var(--color-foreground);
   border-radius: 18px;
-  padding: 24px 20px;
+  padding: 18px 21px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -14,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .calendar_navigation {
@@ -51,7 +50,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   padding: 12px;
-  gap: 36px;
+  gap: 28px;
   text-align: center;
   align-items: center;
 }
@@ -60,7 +59,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 48px;
+  height: 32px;
   border-radius: 12px;
   transition: background-color 200ms ease, transform 200ms ease;
 }
