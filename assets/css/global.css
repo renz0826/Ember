@@ -49,12 +49,15 @@
 
 /* Global styles */
 body {
+  background-image: url("../images/bg.png");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
   font-weight: var(--fw-regular);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   background-color: var(--color-bg);
   color: var(--color-white);
-  -webkit-text-size-adjust: 100%;
 }
 
 main {
