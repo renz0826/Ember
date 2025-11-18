@@ -1,0 +1,63 @@
+.create_moment {
+  font-family: var(--font-sans-roboto);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-foreground);
+  padding: 20px;
+  border-radius: 18px;
+  gap: 18px;
+}
+
+.input_group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-size: var(--fs-h4);
+  font-family: var(--font-sans-mulish);
+}
+
+input,
+textarea {
+  font-family: var(--font-sans-roboto);
+  padding: 11px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-gray);
+  border-radius: 10px;
+  color: var(--color-white);
+  font-size: var(--fs-h5);
+  resize: none;
+}
+
+#moment_media {
+  display: none;
+}
+
+#moment_description {
+  min-height: 300px;
+  max-height: 100%;
+}
+
+#file_status {
+  margin-top: -25%;
+  margin-left: 43%;
+  display: flex;
+  text-align: center;
+}
+
+.media_preview {
+  background-color: var(--color-bg);
+  padding: 12px;
+  border: 1px solid var(--color-gray);
+  border-radius: 10px;
+  min-height: 324px;
+}
+
+.preview-container {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+}
