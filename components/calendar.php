@@ -11,8 +11,6 @@ require_once __DIR__ . '/../includes/head.php';
     <link rel="stylesheet" href="/Ember/assets/css/calendar.css">
     <script src="/Ember/assets/js/calendar.js" defer></script>
 </head>
-
-<body>
     <div id="calendar">
         <h2 id="setDate"></h2>
         <div class="calendar_header">
@@ -28,10 +26,5 @@ require_once __DIR__ . '/../includes/head.php';
             <div class="calendar_week"></div>
             <div class="calendar_grid"></div>
         </div>
-
-
     </div>
-    </div>
-</body>
-
 </html>
