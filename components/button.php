@@ -1,6 +1,32 @@
 <?php
 
-function renderButton($class = " ", $id = "", $img = "", $text, $function, $type) {
-    echo "<a href=\"$function\" > <button type=\"$type\" id=\"$id\" class=\"$class\, type=\"$type\"> <img src=\"$img\"> $text </button></a>";
+function renderLinkButton($text, $function, $class = "", $id = "", $img = "")
+{
+    echo "
+        <a href=\"$function\" class=\"$class\" id=\"$id\">
+            " . (!empty($img) ? "<img src=\"$img\" alt=\"\">" : "") . "
+            $text
+        </a>
+    ";
 }
-?>
+
+function renderSubmitButton($text, $function, $class = "", $id = "", $img = "", $type="submit")
+{
+    echo "
+        <button type=\"$type\" function=\"$function\" class=\"$class\" id=\"$id\">
+            " . (!empty($img) ? "<img src=\"$img\" alt=\"\">" : "") . "
+            $text
+        </button>
+    ";
+}
+
+function renderUploadButton($text, $function, $class = "", $id = "", $img = "", $type="button")
+{
+    echo "
+        <button type=\"$type\" function=\"$function\" class=\"$class\" id=\"$id\">
+            " . (!empty($img) ? "<img src=\"$img\" alt=\"\">" : "") . "
+            $text
+        </button>
+    ";
+}
+
