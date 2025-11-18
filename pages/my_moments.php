@@ -33,7 +33,7 @@ require_once __DIR__ .'/../components/button.php';
                 </div>
                 <div class="bottom_right">
                     <?php require_once __DIR__ . '/../components/calendar.php'; ?>
-                    <?php renderButton('button', 'button','/Ember/assets/icons/icon-preserve-white.svg','Preserve a Moment', 'preserve_moment.php'); ?>
+                    <?php renderButton('button', 'button','/Ember/assets/icons/icon-preserve-white.svg','Preserve a Moment', 'preserve_moment.php', 'button'); ?>
                 </div>
 
             </div>
