@@ -150,27 +150,61 @@ function gapiInit() {
     });
 }
 
-// Ex.
+// Takes User input
+const startDate = document.getElementById("startDate").value;
+const startTime = document.getElementById("startTime").value;
+
+const endDate = document.getElementById("endDate").value;
+const endTime = document.getElementById("endTime").value;
+
+const capsuleName = document.getElementById("capsuleName").value;
+
+// Converts into Google Calendar ISO format
+const startDatetime = `{startDate}T${startTime}:00`;
+const endDateTime = `{endDate}T${endTime}:00`;
+
+// Create Event 
 function createEvent() {
-    const event = {
-        summary: "Meeting with Team",
-        location: "Online",
-        description: "Discuss project updates",
+  gapi.client.calendar.event.insert({
+    calendarId: "primary",
+      resource: {
+        summary: capsuleName,
         start: {
-            dateTime: "2025-01-01T10:00:00+08:00",
-            timeZone: "Asia/Manila",
+          dateTime: startDatetime,
+          //timezone:  
         },
         end: {
-            dateTime: "2025-01-01T11:00:00+08:00",
-            timeZone: "Asia/Manila",
-        },
-    };
-
-    gapi.client.calendar.events.insert({
-        calendarId: "primary",
-        resource: event,
-    }).then(response => {
-        console.log("Event created:", response);
-        alert("Event created! 🎉");
-    });
+          dateTime: endDateTime,
+          //timezone
+        }
+      }
+    }).then(res => {
+      console.log("Capsule Sealed!", res.result);
+  })
 }
+
+
+// Ex.
+// function createEvent() {
+//     const event = {
+//         summary: "Meeting with Team",
+//         location: "Online",
+//         description: "Discuss project updates",
+//         start: {
+//             dateTime: "2025-01-01T10:00:00+08:00",
+//             timeZone: "Asia/Manila",
+//         },
+//         end: {
+//             dateTime: "2025-01-01T11:00:00+08:00",
+//             timeZone: "Asia/Manila",
+//         },
+//     };
+
+//     gapi.client.calendar.events.insert({
+//         calendarId: "primary",
+//         resource: event,
+//     }).then(response => {
+//         console.log("Event created:", response);
+//         alert("Event created! 🎉");
+//     });
+//}
