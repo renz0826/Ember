@@ -36,7 +36,6 @@ require_once __DIR__ . '/../components/calendar.php';
                 <div class="bottom_left">
                     <h3> Soon to Unseal</h3>
                     <?php renderMoment('1', '2', '3', 'Sealed'); ?>
-                    <?php renderRecentMoment('1', '2', '3', 'Sealed'); ?>
                 </div>
                 <div class="bottom_right">
                     <?php renderCalendar(); ?>
