@@ -49,8 +49,6 @@ $currentTitle = $map[$current] ?? null;
           My Moments
         </a>
       </li>
-      <li><a href="view_moment.php">View Moments</a></li>
-      <li><a href="edit_moment.php">Edit Moment</a></li>
       <li class="logout"><a href="/Ember/index.php">
           <img width="32px" height="32px" src="/Ember/assets/icons/icon-logout.svg" alt="icon-logout">
           Logout
