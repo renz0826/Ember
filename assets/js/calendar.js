@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCalendar() {
     grid.innerHTML = "";
 
+    // for days of the week
     let html = "";
     for (const day of days) {
       html += `<p>${day}</p>`;
@@ -55,18 +56,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+    // Fill empty slots before first day
     for (let i = 0; i < firstDay; i++) {
       grid.innerHTML += `<div></div>`;
     }
 
+    // Fill days
     for (let day = 1; day <= daysInMonth; day++) {
       const today = new Date();
       
+      // Check if it is Today (Grey)
       const isToday =
         day === today.getDate() &&
         month === today.getMonth() &&
         year === today.getFullYear();
 
+      // Check if it is Selected (Highlight)
       let isSelected = false;
       if (selectedDateObj) {
           isSelected = 
@@ -75,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
             year === selectedDateObj.getFullYear();
       }
 
+      // Determine classes
       let className = "";
       if (isToday) className += "today ";
       if (isSelected) className += "selected";
@@ -83,13 +89,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Click event
   grid.addEventListener("click", (e) => {
-
+    
     if (e.target.tagName === "P" && e.target.textContent !== "") {
         const clickedDay = parseInt(e.target.textContent);
         
+        // Update object
         selectedDateObj = new Date(date.getFullYear(), date.getMonth(), clickedDay);
         
+        // Re-render to apply the highlight class
         renderCalendar();
     }
   });
