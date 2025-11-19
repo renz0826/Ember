@@ -93,3 +93,11 @@ fileInput.addEventListener("change", () => {
     reader.readAsDataURL(file);
   }
 });
+
+function openPopup() {
+  document.getElementById("editPopup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("editPopup").style.display = "none";
+}

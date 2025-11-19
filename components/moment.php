@@ -6,7 +6,7 @@ function renderMoment($moment_number, $moment_seal_date, $moment_seal_open, $mom
         <div class = \" moment_top\">
             <h4> $moment_status Moment #$moment_number </h4>
             <div class = \"actions\">
-                <button class = \"action\">
+                <button class = \"action\" onclick=\"openPopup()\">
                     <img src = \"/Ember/assets/icons/icon-edit.svg\" />
                     <p> Edit </p>
                 </button>
@@ -63,3 +63,31 @@ function renderRecentMoment($moment_number, $moment_seal_date, $moment_seal_open
         </div>
     </div>";
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+    <div id="editPopup" class="popup_overlay">
+        <div class="popup_box">
+
+
+            <div class="popup_actions">
+                <button onclick="closePopup()">Cancel</button>
+                <button>Save</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
