@@ -99,6 +99,10 @@ header {
   width: fit-content;
 }
 
+.capsule_container p {
+  color: var(--color-gray);
+}
+
 .main_capsule {
   position: relative;
   width: fit-content;
