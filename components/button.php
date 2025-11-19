@@ -4,7 +4,7 @@ function renderLinkButton($text, $function, $class = "", $id = "", $img = "")
 {
     echo "
         <a href=\"$function\" class=\"$class\" id=\"$id\">
-            " . (!empty($img) ? "<img src=\"$img\" alt=\"\">" : "") . "
+            " . (!empty($img) ? "<img width=\"32px\" height=\"32px\" src=\"$img\" alt=\"\">" : "") . "
             $text
         </a>
     ";
@@ -14,7 +14,7 @@ function renderSubmitButton($text, $function, $class = "", $id = "", $img = "", 
 {
     echo "
         <button type=\"$type\" function=\"$function\" class=\"$class\" id=\"$id\">
-            " . (!empty($img) ? "<img src=\"$img\" alt=\"\">" : "") . "
+            " . (!empty($img) ? "<img width=\"32px\" height=\"32px\" src=\"$img\" alt=\"\">" : "") . "
             $text
         </button>
     ";
@@ -24,7 +24,7 @@ function renderUploadButton($text, $function, $class = "", $id = "", $img = "", 
 {
     echo "
         <button type=\"$type\" function=\"$function\" class=\"$class\" id=\"$id\">
-            " . (!empty($img) ? "<img src=\"$img\" alt=\"\">" : "") . "
+            " . (!empty($img) ? "<img width=\"32px\" height=\"32px\" src=\"$img\" alt=\"\">" : "") . "
             $text
         </button>
     ";
