@@ -64,6 +64,21 @@
   transition: background-color 200ms ease, transform 200ms ease;
 }
 
+.calendar_grid p {
+    cursor: pointer;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.calendar_grid p:hover:not(.today):not(.selected) {
+    background-color: var(--color-gray);
+}
+
 .today {
   background-color: var(--color-selected-bg);
   font-weight: bold;
@@ -73,4 +88,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.selected {
+    background-color: #169DD9;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(54, 99, 247, 0.4);
 }
