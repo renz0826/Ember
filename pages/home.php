@@ -6,6 +6,9 @@ require_once __DIR__ . '/../includes/head.php';
 // includes the button component
 require_once __DIR__ . '/../components/button.php';
 
+// includes the capsule component
+require_once __DIR__ . '/../components/capsule.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +32,10 @@ require_once __DIR__ . '/../components/button.php';
             </div>
             <div class="bottom">
                 <div class="bottom_left">
-
+                    <h2> Upcoming Moments </h2>
+                    <?php renderCapsule("1", "2", "3");?>
+                    <?php renderCapsule("1", "2", "3");?>
+                    <?php renderCapsule("1", "2", "3");?>
                 </div>
                 <div class="bottom_right">
                     <?php require_once __DIR__ . '/../components/calendar.php'; ?>
