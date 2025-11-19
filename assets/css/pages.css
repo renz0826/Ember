@@ -69,11 +69,10 @@ textarea {
 }
 
 .edit_bottom {
-  width: 70%;
+  width: 80%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-top: 18px;
   align-items: center;
-  margin: 18px auto;
+  gap: 24px;
+  margin: 4% auto;
 }
