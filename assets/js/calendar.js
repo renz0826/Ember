@@ -139,8 +139,14 @@ const CLIENT_ID = "409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleuser
 const API_KEY = "AIzaSyDT-iOvQSyMCMswPI94LQBPg8Afibdje28";
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
+function signIn() {
+    return gapi.auth2.getAuthInstance().signIn();
+}
+
+gapi.load('client:auth2', initClient);
+
 function gapiInit() {
-    gapi.load("client:auth2", () => {
+    gapi.load("client:auth2",  () => {
         gapi.client.init({
             apiKey: API_KEY,
             clientId: CLIENT_ID,
@@ -163,25 +169,29 @@ const capsuleName = document.getElementById("capsuleName").value;
 const startDatetime = `{startDate}T${startTime}:00`;
 const endDateTime = `{endDate}T${endTime}:00`;
 
-// Create Event 
-function createEvent() {
-  gapi.client.calendar.event.insert({
-    calendarId: "primary",
-      resource: {
-        summary: capsuleName,
-        start: {
-          dateTime: startDatetime,
-          //timezone:  
-        },
-        end: {
-          dateTime: endDateTime,
-          //timezone
+async function addCalendarEvent() {
+  await signIn(); // ← required
+  // Create Event 
+  function addCalendarEvent() {
+    gapi.client.calendar.events.insert({
+      calendarId: "primary",
+        resource: {
+          summary: capsuleName,
+          start: {
+            dateTime: startDatetime,
+            //timezone:  
+          },
+          end: {
+            dateTime: endDateTime,
+            //timezone
+          }
         }
-      }
-    }).then(res => {
-      console.log("Capsule Sealed!", res.result);
-  })
+      }).then(res => {
+        console.log("Capsule Sealed!", res.result);
+    });
+  }
 }
+
 
 
 // Ex.
