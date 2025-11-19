@@ -195,7 +195,7 @@ p,
 }
 
 .caption,
-.small {
+small {
   font-family: var(--font-sans-roboto);
   font-weight: var(--fw-light); /* Roboto Light */
   font-size: var(--fs-caption);
