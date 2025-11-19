@@ -67,3 +67,13 @@ textarea {
   overflow: hidden;
   border-radius: 8px;
 }
+
+.edit_bottom {
+  width: 70%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 18px;
+  align-items: center;
+  margin: 18px auto;
+}
