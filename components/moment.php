@@ -63,3 +63,13 @@ function renderRecentMoment($moment_number, $moment_seal_date, $moment_seal_open
         </div>
     </div>";
 }
+
+function renderRecentlySealed()
+{
+    echo "<div class=\"recently_sealed\">
+            <h3> Recently Sealed </h3>";
+    
+    renderRecentMoment("1", "2", "3", "Sealed");
+
+    echo "</div>";
+}

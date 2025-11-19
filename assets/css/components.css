@@ -209,3 +209,12 @@ header {
 .moment_status {
   color: var(--color-primary);
 }
+
+.recently_sealed {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: var(--color-foreground);
+  padding: 18px 21px;
+  border-radius: 18px;
+}
