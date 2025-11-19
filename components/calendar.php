@@ -30,7 +30,18 @@ require_once __DIR__ . '/../includes/head.php';
             <div class="calendar_grid"></div>
         </div>
 
+    
+    <!-- User Input Field -->
+    <input type="text" id="capsuleName">
+    <br>
+    <input type="date" id="startDate"> 
+    <input type="time" id="startTime">
+    <br>
+    <input type="date" id="endDate">
+    <input type="time" id="endTime">
+    <button onclick="createEvent()">Create Event</button>
 
+    <div></div>
     </div>
     </div>
 </body>
