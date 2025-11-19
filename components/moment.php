@@ -1,8 +1,5 @@
 <?php
 
-// include the calendar component
-require_once __DIR__ . '/../components/calendar.php';
-
 function renderMoment($moment_number, $moment_seal_date, $moment_seal_open, $moment_status)
 {
     echo "<div class = \"moment_container\">
