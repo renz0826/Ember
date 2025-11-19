@@ -30,3 +30,11 @@ function renderUploadButton($text, $function, $class = "", $id = "", $img = "", 
     ";
 }
 
+function renderSortButton($text, $function, $class = "", $id = "", $type="button")
+{
+    echo "
+        <button type=\"$type\" function=\"$function\" class=\"$class\" id=\"$id\">
+            $text
+        </button>
+    ";
+}

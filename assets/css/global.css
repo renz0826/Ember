@@ -251,6 +251,26 @@ a {
   transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
+.button_small {
+  background: var(--gradient-primary);
+  width: 100%;
+  border: none;
+  padding: 8px 18px;
+  color: var(--color-white);
+  font-size: var(--fs-body);
+  font-family: var(--font-sans-mulish);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  border-radius: 18px;
+  filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
+  box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  filter: brightness(1);
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
 .button_no_fill {
   background: none;
   width: 100%;
@@ -271,8 +291,30 @@ a {
   transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
+.button_no_fill_small {
+  background: none;
+  width: max-content;
+  border: 1px solid var(--color-secondary);
+  padding: 8px 18px;
+  color: var(--color-secondary);
+  font-size: var(--fs-body);
+  font-family: var(--font-sans-mulish);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  border-radius: 18px;
+  filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-content: center;
+  cursor: pointer;
+  filter: brightness(1);
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
 .button:hover,
-.button_no_fill {
+.button_no_fill:hover,
+.button_small:hover,
+.button_no_fill_small:hover {
   transform: scale(1.01);
   filter: brightness(1.1);
 }

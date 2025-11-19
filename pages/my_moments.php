@@ -34,7 +34,14 @@ require_once __DIR__ . '/../components/calendar.php';
             </div>
             <div class="bottom">
                 <div class="bottom_left">
-                    <h3> Soon to Unseal</h3>
+                    <div class="moment_top">
+                        <h3> Soon to Unseal</h3>
+                        <div class="actions">
+                            <?=  renderSortButton('Sealed', '', 'button_small', 'sealed-button'); ?>
+                            <?=  renderSortButton('Unsealed', '', 'button_no_fill_small', 'unsealed-button)'); ?>
+                        </div>
+                    </div>
+
                     <?php renderMoment('1', '2', '3', 'Sealed'); ?>
                 </div>
                 <div class="bottom_right">
