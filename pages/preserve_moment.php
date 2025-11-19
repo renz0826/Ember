@@ -29,7 +29,7 @@ require_once __DIR__ . '/../components/button.php';
             </div>
             <div class="bottom">
                 <div class="bottom_left">
-                    <form class="create_moment" action="" method="POST" enctype="multipart/form-data">
+                    <form class="preserve_moment" action="" method="POST" enctype="multipart/form-data">
                         <div class="input_group">
                             <label for="moment_title"> Name this Moment </label>
                             <input type="text" id="moment_title" name="moment_title" placeholder="Name this moment..."
