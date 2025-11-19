@@ -6,6 +6,9 @@ require_once __DIR__ . '/../includes/head.php';
 // includes the button component
 require_once __DIR__ . '/../components/button.php';
 
+// include the calendar component
+require_once __DIR__ . '/../components/calendar.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +57,7 @@ require_once __DIR__ . '/../components/button.php';
                     </form>
                 </div>
                 <div class="bottom_right">
-                    <?php require_once __DIR__ . '/../components/calendar.php'; ?>
+                    <?php renderCalendar(); ?>
                     <?php renderSubmitButton('Seal Moment', '', 'button', 'seal_moment', '/Ember/assets/icons/icon-lock.svg'); ?>
                     <?php renderLinkButton('Cancel', 'home.php', 'button_no_fill', 'cancel', '/Ember/assets/icons/icon-cancel.svg'); ?>
                 </div>

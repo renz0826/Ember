@@ -6,6 +6,8 @@ require_once __DIR__ . '/../includes/head.php';
 // includes button component
 require_once __DIR__ .'/../components/button.php';
 
+// include the calendar component
+require_once __DIR__ . '/../components/calendar.php';
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +34,7 @@ require_once __DIR__ .'/../components/button.php';
 
                 </div>
                 <div class="bottom_right">
-                    <?php require_once __DIR__ . '/../components/calendar.php'; ?>
+                    <?php renderCalendar(); ?>
                     <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
                 </div>
 
