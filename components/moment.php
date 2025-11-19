@@ -1,15 +1,18 @@
 <?php
 
+// include the calendar component
+require_once __DIR__ . '/../components/calendar.php';
+
 function renderMoment($moment_number, $moment_seal_date, $moment_seal_open, $moment_status)
 {
     echo "<div class = \"moment_container\">
         <div class = \" moment_top\">
             <h4> $moment_status Moment #$moment_number </h4>
             <div class = \"actions\">
-                <button class = \"action\" onclick=\"openPopup()\">
+                <a href=\"edit_moment.php\" class = \"action\">
                     <img src = \"/Ember/assets/icons/icon-edit.svg\" />
                     <p> Edit </p>
-                </button>
+                </a>
                 <button class = \"action\">
                     <img src = \"/Ember/assets/icons/icon-delete.svg\" />
                     <p> Delete </p>
@@ -63,31 +66,3 @@ function renderRecentMoment($moment_number, $moment_seal_date, $moment_seal_open
         </div>
     </div>";
 }
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-</head>
-
-<body>
-
-    <div id="editPopup" class="popup_overlay">
-        <div class="popup_box">
-
-
-            <div class="popup_actions">
-                <button onclick="closePopup()">Cancel</button>
-                <button>Save</button>
-            </div>
-        </div>
-    </div>
-
-
-</body>
-
-</html>
