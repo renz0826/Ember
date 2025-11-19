@@ -71,7 +71,8 @@ HTML;
     <br>
     <input type="date" id="endDate">
     <input type="time" id="endTime">
-    <button onclick="createEvent()">Create Event</button>
+    <button onclick="addCalendarEvent()">Create Event</button>
+    <button onclick="signIn()">Log in</button>
 
     <div></div>
     </div>
