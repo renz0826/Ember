@@ -23,6 +23,7 @@ require_once __DIR__ . '/../components/moment.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Moments - Ember</title>
+    <script src="/Ember/assets/js/script.js" defer></script>
 </head>
 
 <body>
@@ -41,7 +42,7 @@ require_once __DIR__ . '/../components/moment.php';
                         <h3> Soon to Unseal</h3>
                         <div class="actions">
                             <?=  renderSortButton('Sealed', '', 'button_small', 'sealed-button'); ?>
-                            <?=  renderSortButton('Unsealed', '', 'button_no_fill_small', 'unsealed-button)'); ?>
+                            <?=  renderSortButton('Unsealed', '', 'button_no_fill_small', 'unsealed-button'); ?>
                         </div>
                     </div>
 
