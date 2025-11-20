@@ -7,19 +7,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next");
 
   let date = new Date();
-  
   let selectedDateObj = null;
+
+  // Get current page title
+  const titleFromPHP = document.documentElement.dataset.title;
+
+  // Pages allow interaction
+  const allowedPages = ["Preserve a Moment", "Edit Your Moment"];
+  const isInteractive = allowedPages.includes(titleFromPHP);
+
+  // Add specific class if interactive (Enables CSS hover/pointer)
+  if (isInteractive) {
+    grid.classList.add("interactive");
+  }
 
   function renderCalendarUse(title) {
     const setTitle = [
-      {
-        title: "Preserve a Moment",
-        useCase: "Seal Until...",
-      },
-      {
-        title: "Edit Your Moment",
-        useCase: "Seal Until...",
-      },
+      { title: "Preserve a Moment", useCase: "Seal Until..." },
+      { title: "Edit Your Moment", useCase: "Seal Until..." },
     ];
     const setDate = document.getElementById("setDate");
     const page = setTitle.find((c) => c.title === title);
@@ -32,13 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const titleFromPHP = document.documentElement.dataset.title;
   renderCalendarUse(titleFromPHP);
 
   function renderCalendar() {
     grid.innerHTML = "";
 
-    // for days of the week
     let html = "";
     for (const day of days) {
       html += `<p>${day}</p>`;
@@ -56,31 +59,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // Fill empty slots before first day
     for (let i = 0; i < firstDay; i++) {
       grid.innerHTML += `<div></div>`;
     }
 
-    // Fill days
     for (let day = 1; day <= daysInMonth; day++) {
       const today = new Date();
       
-      // Check if it is Today (Grey)
+      // Always calculate Today
       const isToday =
         day === today.getDate() &&
         month === today.getMonth() &&
         year === today.getFullYear();
 
-      // Check if it is Selected (Highlight)
+      // Only calculate Selected if we are in Interactive Mode
       let isSelected = false;
-      if (selectedDateObj) {
+      if (isInteractive && selectedDateObj) {
           isSelected = 
             day === selectedDateObj.getDate() &&
             month === selectedDateObj.getMonth() &&
             year === selectedDateObj.getFullYear();
       }
 
-      // Determine classes
       let className = "";
       if (isToday) className += "today ";
       if (isSelected) className += "selected";
@@ -89,16 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Click event
+  // Gate the Click Listener
   grid.addEventListener("click", (e) => {
-    
+    // If not on allowed page, stop immediately
+    if (!isInteractive) return;
+
     if (e.target.tagName === "P" && e.target.textContent !== "") {
         const clickedDay = parseInt(e.target.textContent);
-        
-        // Update object
         selectedDateObj = new Date(date.getFullYear(), date.getMonth(), clickedDay);
-        
-        // Re-render to apply the highlight class
         renderCalendar();
     }
   });
