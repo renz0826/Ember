@@ -134,65 +134,82 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCalendar();
 });
 
-// Calendar API 
-const CLIENT_ID = "409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
+// Calendar API
+const CLIENT_ID =
+  "409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
 const API_KEY = "AIzaSyDT-iOvQSyMCMswPI94LQBPg8Afibdje28";
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
 function signIn() {
-    return gapi.auth2.getAuthInstance().signIn();
+  return gapi.auth2.getAuthInstance().signIn();
 }
 
-gapi.load('client:auth2', initClient);
+gapi.load("client:auth2", initClient);
 
 function gapiInit() {
-    gapi.load("client:auth2",  () => {
-        gapi.client.init({
-            apiKey: API_KEY,
-            clientId: CLIENT_ID,
-            scope: SCOPES,
-            discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
-        });
+  gapi.load("client:auth2", () => {
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      scope: SCOPES,
+      discoveryDocs: [
+        "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+      ],
     });
+  });
 }
 
-// Takes User input
-const startDate = document.getElementById("startDate").value;
-const startTime = document.getElementById("startTime").value;
+// 1. Variable Declaration (Ensure these match your HTML IDs)
+const startDateInput = document.getElementById("startDate");
+const startTimeInput = document.getElementById("startTime");
+const endDateInput = document.getElementById("endDate");
+const endTimeInput = document.getElementById("endTime");
+const capsuleNameInput = document.getElementById("capsuleName");
 
-const endDate = document.getElementById("endDate").value;
-const endTime = document.getElementById("endTime").value;
-
-const capsuleName = document.getElementById("capsuleName").value;
-
-// Converts into Google Calendar ISO format
-const startDatetime = `{startDate}T${startTime}:00`;
-const endDateTime = `{endDate}T${endTime}:00`;
+// ... (Your API Key and Client ID setup remains the same) ...
 
 async function addCalendarEvent() {
-  await signIn(); // ← required
-  // Create Event 
-  function addCalendarEvent() {
-    gapi.client.calendar.events.insert({
-      calendarId: "primary",
-        resource: {
-          summary: capsuleName,
-          start: {
-            dateTime: startDatetime,
-            //timezone:  
-          },
-          end: {
-            dateTime: endDateTime,
-            //timezone
-          }
-        }
-      }).then(res => {
-        console.log("Capsule Sealed!", res.result);
-    });
+  // 2. Fix: Wait for sign-in to complete before proceeding
+  try {
+    await gapi.auth2.getAuthInstance().signIn();
+  } catch (error) {
+    console.error("Error signing in", error);
+    return;
   }
+
+  // 3. Fix: format the dates correctly
+  // ERROR IN YOUR CODE: You wrote `{startDate}`. It must be `${startDate}`
+  const startDatetime = `${startDateInput.value}T${startTimeInput.value}:00`;
+  const endDateTime = `${endDateInput.value}T${endTimeInput.value}:00`;
+
+  // 4. Fix: Remove the nested function definition.
+  // You had 'function addCalendarEvent' INSIDE 'function addCalendarEvent'.
+
+  const event = {
+    summary: capsuleNameInput.value,
+    start: {
+      dateTime: startDatetime,
+      timeZone: "Asia/Manila", // Recommended: Hardcode your timezone or detect it
+    },
+    end: {
+      dateTime: endDateTime,
+      timeZone: "Asia/Manila",
+    },
+  };
+
+  gapi.client.calendar.events
+    .insert({
+      calendarId: "primary",
+      resource: event,
+    })
+    .then((res) => {
+      console.log("Capsule Sealed!", res);
+      alert("Event created successfully!");
+    })
+    .catch((err) => {
+      console.error("Error creating event", err);
+    });
 }
-
-
 
 // Ex.
 // function createEvent() {
