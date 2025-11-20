@@ -1,0 +1,145 @@
+/* General Reset and Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif; /* Use a font similar to the image */
+}
+
+/* Background Container for the Main Gradient */
+.background-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f1c2c 0%, #000000 50%, #0056b3 100%);
+    position: relative;
+}
+
+/* The Login Card - Main Glassmorphic Element */
+.login-card {
+    width: 380px;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.4); /* Dark background with transparency */
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    backdrop-filter: blur(10px); /* The "Glass" effect */
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border for depth */
+    text-align: center;
+    color: #f0f8ff; /* Light text color */
+}
+
+/* Logo Styling */
+.logo {
+    width: 60px; /* Adjust size as needed */
+    margin-bottom: 20px;
+    /* You would need to make sure 'ember-logo.png' has a dark/blue flame design */
+}
+
+/* Text Styling */
+.welcome-text {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.subtitle {
+    font-size: 0.9em;
+    color: #cccccc;
+    margin-bottom: 20px;
+}
+
+/* Input Group Layout */
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #e0e0e0;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.6); /* Slightly darker input background */
+    color: #ffffff;
+    font-size: 1em;
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition: background 0.3s;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #888888;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 0 2px #007bff; /* Subtle blue focus glow */
+}
+
+/* Remember Me Checkbox */
+.remember-me {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.9em;
+    margin-bottom: 25px;
+    color: #cccccc;
+}
+
+.remember-me input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Login Button */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    /* Blue gradient to match the design */
+    background: linear-gradient(to right, #007bff, #00c6ff);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(to right, #0056b3, #0099e5);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.6);
+}
+
+/* Top Right Code Icon Styling */
+.code-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #ffffff;
+    font-size: 1.5em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 5px;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
