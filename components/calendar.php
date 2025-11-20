@@ -41,42 +41,37 @@ HTML;
 
 <head>
     <link rel="stylesheet" href="/Ember/assets/css/calendar.css">
-    <script src="/Ember/assets/js/calendar.js" defer></script>
+
     <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
 </head>
 
-<body onload="gapiInit()">
-    <div id="calendar">
+<body>
+    <div id="calendar" data-title="Preserve a Moment">
         <h2 id="setDate"></h2>
         <div class="calendar_header">
-
             <h4 id="month_year"></h4>
             <div class="calendar_navigation">
-                <button id="prev"> <img src="/Ember/assets/icons/icon-arrow.svg" alt="icon-arrow" /> </button>
-                <button id="next"> <img style="rotate: 180deg; " src="/Ember/assets/icons/icon-arrow.svg"
-                        alt="icon-arrow" /> </button>
+                <button id="prev"> <img src="/Ember/assets/icons/icon-arrow.svg" alt="Previous" /> </button>
+                <button id="next"> <img style="transform: rotate(180deg);" src="/Ember/assets/icons/icon-arrow.svg"
+                        alt="Next" /> </button>
             </div>
         </div>
+
         <div class="main_calendar">
             <div class="calendar_week"></div>
             <div class="calendar_grid"></div>
         </div>
 
-    
-    <!-- User Input Field -->
-    <input type="text" id="capsuleName">
-    <br>
-    <input type="date" id="startDate"> 
-    <input type="time" id="startTime">
-    <br>
-    <input type="date" id="endDate">
-    <input type="time" id="endTime">
-    <button onclick="addCalendarEvent()">Create Event</button>
-    <button onclick="signIn()">Log in</button>
+        <h1>Add to Calendar</h1>
+        <input type="text" id="capsuleName" placeholder="Event Name" value="My Test Event"><br><br>
+        <input type="date" id="startDate"> <input type="time" id="startTime"><br><br>
+        <input type="date" id="endDate"> <input type="time" id="endTime"><br><br>
 
-    <div></div>
+        <button onclick="handleAuthClick()">Add to Calendar</button>
     </div>
-    </div>
+
+    <script src="/Ember/assets/js/calendar.js"></script>
 </body>
 
 </html>
