@@ -1,4 +1,123 @@
-document.addEventListener("DOMContentLoaded", () => {
+// ==========================================
+// PART 1: GOOGLE API CONFIGURATION
+// ==========================================
+const CLIENT_ID =
+  "409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
+const API_KEY = "AIzaSyDT-iOvQSyMCMswPI94LQBPg8Afibdje28";
+const DISCOVERY_DOC =
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+
+// ==========================================
+// PART 2: INITIALIZATION LOGIC
+// ==========================================
+
+// Triggered when window finishes loading
+window.onload = function () {
+  // 1. Init Custom Calendar
+  initCustomCalendar();
+
+  // 2. Init Google Libraries
+  // We use try-catch to prevent crashing if scripts failed to load
+  try {
+    gapi.load("client", initializeGapiClient);
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      callback: "", // Defined later in handleAuthClick
+    });
+    gisInited = true;
+    console.log("Google Identity Services (GIS) Loaded");
+  } catch (err) {
+    console.error(
+      "Error loading Google Scripts. Check your network or API keys.",
+      err
+    );
+  }
+};
+
+async function initializeGapiClient() {
+  await gapi.client.init({
+    apiKey: API_KEY,
+    discoveryDocs: [DISCOVERY_DOC],
+  });
+  gapiInited = true;
+  console.log("GAPI Client Loaded");
+}
+
+// ==========================================
+// PART 3: AUTHENTICATION & EVENT CREATION
+// ==========================================
+
+async function handleAuthClick() {
+  // Safety Check
+  if (!gapiInited || !gisInited) {
+    alert("Google API not ready yet. Please refresh the page.");
+    return;
+  }
+
+  tokenClient.callback = async (resp) => {
+    if (resp.error) {
+      throw resp;
+    }
+    await createCalendarEvent();
+  };
+
+  if (gapi.client.getToken() === null) {
+    tokenClient.requestAccessToken({ prompt: "consent" });
+  } else {
+    await createCalendarEvent();
+  }
+}
+
+async function createCalendarEvent() {
+  const capsuleName = document.getElementById("capsuleName").value;
+  const startDate = document.getElementById("startDate").value;
+  const startTime = document.getElementById("startTime").value;
+  const endDate = document.getElementById("endDate").value;
+  const endTime = document.getElementById("endTime").value;
+
+  if (!startDate || !startTime || !endDate || !endTime) {
+    alert("Please fill in all date/time fields.");
+    return;
+  }
+
+  const event = {
+    summary: capsuleName,
+    start: {
+      dateTime: `${startDate}T${startTime}:00`,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+    end: {
+      dateTime: `${endDate}T${endTime}:00`,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+  };
+
+  try {
+    const request = await gapi.client.calendar.events.insert({
+      calendarId: "primary",
+      resource: event,
+    });
+
+    console.log("Success!", request);
+    alert("Event created successfully!");
+    window.open(request.result.htmlLink, "_blank");
+  } catch (err) {
+    console.error("Error creating event:", err);
+    alert("Failed to create event. Check console for details.");
+  }
+}
+
+// ==========================================
+// PART 4: CUSTOM CALENDAR UI LOGIC
+// ==========================================
+
+function initCustomCalendar() {
   const monthYear = document.getElementById("month_year");
   const week = document.querySelector(".calendar_week");
   const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
@@ -132,106 +251,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   renderCalendar();
-});
-
-// Calendar API
-const CLIENT_ID =
-  "409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
-const API_KEY = "AIzaSyDT-iOvQSyMCMswPI94LQBPg8Afibdje28";
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-
-function signIn() {
-  return gapi.auth2.getAuthInstance().signIn();
 }
-
-gapi.load("client:auth2", initClient);
-
-function gapiInit() {
-  gapi.load("client:auth2", () => {
-    gapi.client.init({
-      apiKey: API_KEY,
-      clientId: CLIENT_ID,
-      scope: SCOPES,
-      discoveryDocs: [
-        "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-      ],
-    });
-  });
-}
-
-// 1. Variable Declaration (Ensure these match your HTML IDs)
-const startDateInput = document.getElementById("startDate");
-const startTimeInput = document.getElementById("startTime");
-const endDateInput = document.getElementById("endDate");
-const endTimeInput = document.getElementById("endTime");
-const capsuleNameInput = document.getElementById("capsuleName");
-
-// ... (Your API Key and Client ID setup remains the same) ...
-
-async function addCalendarEvent() {
-  // 2. Fix: Wait for sign-in to complete before proceeding
-  try {
-    await gapi.auth2.getAuthInstance().signIn();
-  } catch (error) {
-    console.error("Error signing in", error);
-    return;
-  }
-
-  // 3. Fix: format the dates correctly
-  // ERROR IN YOUR CODE: You wrote `{startDate}`. It must be `${startDate}`
-  const startDatetime = `${startDateInput.value}T${startTimeInput.value}:00`;
-  const endDateTime = `${endDateInput.value}T${endTimeInput.value}:00`;
-
-  // 4. Fix: Remove the nested function definition.
-  // You had 'function addCalendarEvent' INSIDE 'function addCalendarEvent'.
-
-  const event = {
-    summary: capsuleNameInput.value,
-    start: {
-      dateTime: startDatetime,
-      timeZone: "Asia/Manila", // Recommended: Hardcode your timezone or detect it
-    },
-    end: {
-      dateTime: endDateTime,
-      timeZone: "Asia/Manila",
-    },
-  };
-
-  gapi.client.calendar.events
-    .insert({
-      calendarId: "primary",
-      resource: event,
-    })
-    .then((res) => {
-      console.log("Capsule Sealed!", res);
-      alert("Event created successfully!");
-    })
-    .catch((err) => {
-      console.error("Error creating event", err);
-    });
-}
-
-// Ex.
-// function createEvent() {
-//     const event = {
-//         summary: "Meeting with Team",
-//         location: "Online",
-//         description: "Discuss project updates",
-//         start: {
-//             dateTime: "2025-01-01T10:00:00+08:00",
-//             timeZone: "Asia/Manila",
-//         },
-//         end: {
-//             dateTime: "2025-01-01T11:00:00+08:00",
-//             timeZone: "Asia/Manila",
-//         },
-//     };
-
-//     gapi.client.calendar.events.insert({
-//         calendarId: "primary",
-//         resource: event,
-//     }).then(response => {
-//         console.log("Event created:", response);
-//         alert("Event created! 🎉");
-//     });
-//}
