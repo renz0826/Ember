@@ -1,80 +1,80 @@
-/* General Reset and Body Styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif; /* Use a font similar to the image */
+body {
+    background-image: url("../../assets/images/bg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
 }
 
-/* Background Container for the Main Gradient */
 .background-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #0f1c2c 0%, #000000 50%, #0056b3 100%);
     position: relative;
 }
 
-/* The Login Card - Main Glassmorphic Element */
+.login {
+    display: flex;
+    flex-direction: column;
+}
+
+.login img {
+    align-self: center;
+    justify-self: center;
+    margin-bottom: 50px;
+}
+
 .login-card {
-    width: 380px;
+    width: 510px;
+    height: fit-content;
     padding: 40px;
-    background: rgba(0, 0, 0, 0.4); /* Dark background with transparency */
-    border-radius: 15px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    backdrop-filter: blur(10px); /* The "Glass" effect */
+    background: rgba(67, 67, 67, 0.4);
+    border-radius: 30px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border for depth */
+    border: 1px solid var(--color-white);
     text-align: center;
-    color: #f0f8ff; /* Light text color */
+    color: var(--color-white);
+    
 }
 
-/* Logo Styling */
-.logo {
-    width: 60px; /* Adjust size as needed */
-    margin-bottom: 20px;
-    /* You would need to make sure 'ember-logo.png' has a dark/blue flame design */
-}
-
-/* Text Styling */
 .welcome-text {
-    font-size: 1.5em;
-    font-weight: 600;
+    font-family: var(--font-sans-mulish);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-h3);
+    color: var(--color-white);
     margin-bottom: 5px;
-    color: #ffffff;
 }
 
 .subtitle {
-    font-size: 0.9em;
-    color: #cccccc;
-    margin-bottom: 20px;
+    font-size: var(--fs-caption);
+    font-family: var(--font-sans-roboto);
+    color: var(--color-white);
+    margin-bottom: 50px;
+    font-weight: var(--fw-light); 
+    
 }
 
-/* Input Group Layout */
-.input-group {
-    text-align: left;
-    margin-bottom: 15px;
-}
-
-.input-group label {
+.form-label {
     display: block;
+    text-align: left;
     margin-bottom: 8px;
-    font-size: 0.9em;
-    font-weight: 500;
-    color: #e0e0e0;
+    font-size: var(--fs-subhead);
+    color: var(--color-white);
+    font-weight: var(--fw-medium);
 }
 
-/* Input Fields */
 input[type="text"],
 input[type="password"] {
     width: 100%;
     padding: 12px 15px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.6); /* Slightly darker input background */
-    color: #ffffff;
-    font-size: 1em;
+    border: 1px solid var(--color-white);
+    border-radius: 12px;
+    background: var(--color-foreground);
+    color: var(--color-white);
+    font-size: var(--fs-body);
     outline: none;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
     transition: background 0.3s;
@@ -88,58 +88,86 @@ input[type="password"]::placeholder {
 input[type="text"]:focus,
 input[type="password"]:focus {
     background: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 0 2px #007bff; /* Subtle blue focus glow */
+    box-shadow: 0 0 0 2px var(--color-primary);
 }
 
-/* Remember Me Checkbox */
 .remember-me {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 0.9em;
     margin-bottom: 25px;
-    color: #cccccc;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.remember-label {
+    font-size: var(--fs-caption);
+    color: var(--color-white);
+    cursor: pointer;
+    margin: 0; 
 }
 
 .remember-me input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-/* Login Button */
-.login-btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #ffffff;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 0;
+    border: 1px solid white;
+    background: transparent;
     cursor: pointer;
-    /* Blue gradient to match the design */
-    background: linear-gradient(to right, #007bff, #00c6ff);
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-    transition: background 0.3s, box-shadow 0.3s;
+    position: relative;
+    transition: background 0.3s, border 0.3s;
+    flex-shrink: 0;
+    margin: 0; 
 }
 
-.login-btn:hover {
-    background: linear-gradient(to right, #0056b3, #0099e5);
-    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.6);
+.remember-me input[type="checkbox"]:checked {
+    background: transparent;
+    border: 1px solid white;
 }
 
-/* Top Right Code Icon Styling */
-.code-icon {
+.remember-me input[type="checkbox"]:checked::before {
+    content: '✓';
     position: absolute;
-    top: 20px;
-    right: 20px;
-    color: #ffffff;
-    font-size: 1.5em;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    padding: 5px;
-    height: 35px;
-    width: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logo {
+    max-width: 150px;  
+    height: auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+input.error-input {
+    border: 2px solid #ff4444 !important;
+    box-shadow: 0 0 8px rgba(255, 68, 68, 0.5) !important;
+    animation: shake 0.3s;
+}
+
+.error-message {
+    display: block;
+    margin-top: 5px;
+    min-height: 18px;
+    font-family: var(--font-sans-roboto);
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Success state */
+input.success-input {
+    border: 2px solid #4caf50 !important;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3) !important;
 }
