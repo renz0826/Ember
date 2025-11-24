@@ -1,5 +1,10 @@
 <!doctype html>
 <html lang="en">
+<?php
+
+// database connection
+require_once __DIR__ . '/../includes/db_connect.php';
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
