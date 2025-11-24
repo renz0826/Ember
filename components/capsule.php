@@ -14,9 +14,17 @@ $result = $conn -> query($sql);
 
         $openDate = new DateTime($row['open']);
         $today = new DateTime('today');
-        $interval = $today -> diff($openDate);
-        $daysLeft = $interval -> days;
-        $isReady = $interval -> invert;
+
+        if ($today >= $openDate) {
+            $isReady = true;
+            $daysLeft = 0;
+        } else {
+            $isReady = false;
+            $interval = $today -> diff($openDate);
+            $daysLeft = $interval -> days;
+
+        }
+
         
         ?>
     <div class="capsule_container">
