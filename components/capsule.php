@@ -1,6 +1,6 @@
 <?php
 
-$sql = "SELECT * FROM moments";
+$sql = "SELECT * FROM moments ORDER BY open ASC";
 $result = $conn -> query($sql);
 
 ?>
