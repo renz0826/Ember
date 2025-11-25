@@ -74,10 +74,21 @@ async function handleAuthClick() {
   }
 }
 
+function convertToISO(dateStr, timeStr) {
+  const [day, month, year] = dateStr.split("/");
+  const isoString = new Date(`${year}-${month}-${day}T${timeStr}:00`).toISOString();
+  return isoString;
+}
+
+
 async function createCalendarEvent() {
   const capsuleName = document.getElementById("capsuleName").value;
-  const startDate = document.getElementById("startDate").value;
-  const startTime = document.getElementById("startTime").value;
+
+  // Get current date in DD-MM-YYYY format
+  const now = new Date();
+  const startDate = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
+  const startTime = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
   const endDate = document.getElementById("endDate").value;
   const endTime = document.getElementById("endTime").value;
 
@@ -89,7 +100,7 @@ async function createCalendarEvent() {
   const event = {
     summary: capsuleName,
     start: {
-      dateTime: `${startDate}T${startTime}:00`,
+      dateTime: convertToISO(startDate, startTime),
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
     end: {

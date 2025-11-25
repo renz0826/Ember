@@ -65,7 +65,7 @@ HTML;
 
         <h1>Add to Calendar</h1>
         <input type="text" id="capsuleName" placeholder="Event Name" value="My Test Event"><br><br>
-        <input type="date" id="startDate"> <input type="time" id="startTime"><br><br>
+        <!-- <input type="date" id="startDate"> <input type="time" id="startTime"><br><br> -->
         <input type="date" id="endDate"> <input type="time" id="endTime"><br><br>
 
         <button onclick="handleAuthClick()">Add to Calendar</button>
