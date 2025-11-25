@@ -102,23 +102,20 @@ document.addEventListener("DOMContentLoaded", () => {
         clickedDay
       );
 
-      // --- START FIX: Add these lines to update the hidden form input ---
       const year = selectedDateObj.getFullYear();
-      // Ensure month is 2 digits (JavaScript months are 0-11, so we add 1)
+
       const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
-      // Ensure day is 2 digits
+
       const day = String(selectedDateObj.getDate()).padStart(2, "0");
 
-      // Format must be YYYY-MM-DD for the database
       const formattedDate = `${year}-${month}-${day}`;
 
       // Find the hidden input by ID and set the value
       const endDateInput = document.getElementById("endDate");
       if (endDateInput) {
         endDateInput.value = formattedDate;
-        console.log("Open date has been set to ", formattedDate); // Check your console for this!
+        console.log("Open date has been set to ", formattedDate); // Check console for this
       }
-      // --- END FIX ---
 
       renderCalendar();
     }
