@@ -178,13 +178,13 @@ header {
   align-items: center;
 }
 
-.moment_bottom img {
+.moment_bottom .thumbnail_container img {
   width: 72px;
   height: 72px;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
-.recent_moment_bottom img {
+.recent_moment_bottom .thumbnail_container img {
   width: 54px;
   height: 54px;
   border-radius: 10px;
@@ -217,4 +217,34 @@ header {
   background-color: var(--color-foreground);
   padding: 18px 21px;
   border-radius: 18px;
+}
+
+.thumbnail_container {
+  position: relative;
+  width: fit-content;
+}
+
+.Sealed {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-primary);
+  opacity: 0.9;
+}
+
+.Unsealed {
+  display: none;
+}
+
+.seal_status {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.recent_moment_bottom .seal_status img {
+  width: 18px;
+  height: 18px;
 }

@@ -14,6 +14,9 @@ require_once __DIR__ . '/../components/calendar.php';
 
 // include the moment component
 require_once __DIR__ . '/../components/moment.php';
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -44,13 +47,12 @@ require_once __DIR__ . '/../components/moment.php';
                             <?=  renderSortButton('Unsealed', '', 'button_no_fill_small', 'unsealed-button)'); ?>
                         </div>
                     </div>
-
-                    <?php renderMoment('1', '2', '3', 'Sealed'); ?>
+                    <?= renderAllMoments($conn) ?>
                 </div>
                 <div class="bottom_right">
                     <?php renderCalendar(); ?>
                     <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
-                    <?php renderRecentlySealed(); ?>
+                    <?php renderRecentlySealed($conn); ?>
                 </div>
 
             </div>
