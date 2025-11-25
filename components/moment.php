@@ -2,27 +2,43 @@
 
 require_once __DIR__ . '/../includes/db_connect.php';
 
-function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $sealImgSrc)
+function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $sealImgSrc, $editAction, $deleteAction)
 {
     echo "<div class = \"moment_container\">
         <div class = \" moment_top\">
             <h4> $status Moment #$momentNumber </h4>
             <div class = \"actions\">
-                <a href=\"edit_moment.php\" class = \"action\">
+                <a $editAction class = \"action\">
                     <img src = \"/Ember/assets/icons/icon-edit.svg\" />
                     <p> Edit </p>
                 </a>
-                <button class = \"action\">
+                <button class = \"action\" data-moment-id=\"$momentNumber\">
                     <img src = \"/Ember/assets/icons/icon-delete.svg\" />
                     <p> Delete </p>
                 </button>
+                <div class = \"delete-modal\" id = \"modal-$momentNumber\" style=\"display: none;\">
+                    <div class = \"pop_up_content\">
+                        <img class = \"graphic-size\" src = \"/Ember/assets/icons/icon-delete-confirmation.svg\" />
+                        <h4> Delete Moment? </h4>
+                        <p> Your moment will be permanently deleted. Pleae proceed with caution. </p>
+                        <a $deleteAction class = \"button-delete\">
+                            <img src = \"/Ember/assets/icons/icon-delete-white.svg\" />
+                            <h5> Delete Moment </h5>
+                        </a>
+                        <a href=\"my_moments.php\" class = \"button_no_fill_cancel\">
+                            <img src = \"/Ember/assets/icons/icon-cancel-white.svg\" />
+                            <h5> Cancel </h5>
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <div class = \"moment_bottom\">
             <div class = \"thumbnail_container\">
-                <img id=\"thumbnail\" src=$imgSrc />
-                <img class=$status src=\"/Ember/assets/images/sealed.png\">
+                <img id=\"thumbnail\" src=\"$imgSrc\" />
+                <img class=\"$status\" src=\"/Ember/assets/images/sealed.png\">
             </div>
             <div class=\"info\">
                 <div class =\"seal_info\">
@@ -36,7 +52,7 @@ function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $s
                 <div class =\"seal_info\">
                     <p class =\"info_title\"> Status </p>
                     <div class =\"seal_status\">
-                        <img src =$sealImgSrc>
+                        <img src =\"$sealImgSrc\">
                         <p class =\"moment_status\"> $status </p>       
                     </div>
                 </div>
@@ -47,6 +63,7 @@ function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $s
 
 function renderRecentMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $sealImgSrc)
 {
+    // Fixed missing quotes around src attributes in img tags
     echo "<div class = \"recent_moment_container\">
         <div class = \" moment_top\">
             <h5> $status Moment #$momentNumber </h5>
@@ -54,8 +71,8 @@ function renderRecentMoment($momentNumber, $sealDate, $openDate, $status, $imgSr
 
         <div class = \"recent_moment_bottom\">
             <div class = \"thumbnail_container\">
-                <img id=\"thumbnail\" src=$imgSrc />
-                <img class=$status src=\"/Ember/assets/images/sealed.png\">
+                <img id=\"thumbnail\" src=\"$imgSrc\" />
+                <img class=\"$status\" src=\"/Ember/assets/images/sealed.png\">
             </div>
             <div class=\"info\">
                 <div class =\"seal_info\">
@@ -69,7 +86,7 @@ function renderRecentMoment($momentNumber, $sealDate, $openDate, $status, $imgSr
                 <div class =\"seal_info\">
                     <small class =\"info_title\"> Status </small>
                     <div class =\"seal_status\">
-                        <img src =$sealImgSrc>
+                        <img src =\"$sealImgSrc\">
                         <small class =\"moment_status\"> $status </small>       
                     </div>
                 </div>
@@ -77,6 +94,7 @@ function renderRecentMoment($momentNumber, $sealDate, $openDate, $status, $imgSr
         </div>
     </div>";
 }
+
 function renderAllMoments($conn)
 {
     
@@ -86,7 +104,10 @@ function renderAllMoments($conn)
     if ($result->num_rows > 0) {
         // Loop through every row in the database
         while ($row = $result->fetch_assoc()) {
-        
+
+            $editAction = 'href="edit_moment.php?id=' . htmlspecialchars($row['id']) . '"';
+            $deleteAction = 'href="delete_moment.php?id=' . htmlspecialchars($row['id']) . '"';
+
             $id = $row['id'];
 
             $today = new DateTime('today');
@@ -106,7 +127,7 @@ function renderAllMoments($conn)
 
             $img = $row['image_url'];
 
-            displayMoment($id, $sealDateDisplay, $openDateDisplay, $statusText, $img, $sealImgSrc);
+            displayMoment($id, $sealDateDisplay, $openDateDisplay, $statusText, $img, $sealImgSrc, $editAction, $deleteAction);
         }
     } else {
         echo "<p style='padding: 20px; color: #666;'>No moments found.</p>";
