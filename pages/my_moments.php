@@ -3,17 +3,10 @@
 // includes the head
 require_once __DIR__ . '/../includes/head.php';
 
-// includes button component
+// includes components
 require_once __DIR__ .'/../components/button.php';
-
-// includes moment component
-require_once __DIR__ .'/../components/moment.php';
-
-// include the calendar component
 require_once __DIR__ . '/../components/calendar.php';
-
-// include the moment component
-require_once __DIR__ . '/../components/moment.php';
+require_once __DIR__ . '/../components/moment.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -34,22 +27,34 @@ require_once __DIR__ . '/../components/moment.php';
         <div class="right">
             <div class="top">
                 <?php require_once __DIR__ . '/../components/header.php'; ?>
-            </div>
+            </div>  
             <div class="bottom">
                 <div class="bottom_left">
                     <div class="moment_top">
                         <h3> Soon to Unseal</h3>
                         <div class="actions">
-                            <?=  renderSortButton('Sealed', '', 'button_small', 'sealed-button'); ?>
-                            <?=  renderSortButton('Unsealed', '', 'button_no_fill_small', 'unsealed-button)'); ?>
+                            <?= renderSortButton('Sealed', 'javascript:void(0)', 'button_small', 'filter-sealed'); ?>
+                            <?= renderSortButton('Unsealed', 'javascript:void(0)', 'button_no_fill_small', 'filter-unsealed'); ?>
                         </div>
                     </div>
 
-                    <?php renderMoment('1', '2', '3', 'Sealed'); ?>
+                    <div id="moments-list">
+                        <?php renderMoment('5', 'Sept 29, 2025', 'Jan 17, 2026', 'Sealed'); ?>
+                        <?php renderMoment('4', 'Aug 26, 2025', 'Feb 14, 2026', 'Sealed'); ?>
+                        <?php renderMoment('3', 'July 18, 2025', 'Jan 17, 2026', 'Sealed'); ?>
+                        <?php renderMoment('2', 'July 02, 2025', 'Mar 26, 2026', 'Sealed'); ?>
+
+                        <?php renderMoment('1', 'Jan 01, 2024', 'Nov 25, 2025', 'Unsealed'); ?>
+                    </div>
                 </div>
+                
                 <div class="bottom_right">
                     <?php renderCalendar(); ?>
-                    <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    </div>
+                    
                     <?php renderRecentlySealed(); ?>
                 </div>
 

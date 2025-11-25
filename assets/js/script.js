@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  
   const headers = [
     {
       title: "Home",
@@ -22,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       title: "Moments Last",
-      description: "Look back on the memories you’ve held close.",
+      description:
+        "Look back on the memories you’ve held close.",
     },
   ];
 
@@ -30,66 +32,114 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("pageHeader");
     const page = headers.find((c) => c.title === title);
 
-    if (page) {
+    if (page && container) {
       container.innerHTML = `
       <h2>${page.title}</h2>
       <p style="color: var(--color-gray)">${page.description}</p>
     `;
-    } else {
+    } else if (container) {
       container.innerHTML = `<p>Info not found</p>`;
     }
   }
 
   const titleFromPHP = document.documentElement.dataset.title;
-  renderHeaderInfo(titleFromPHP);
+  if (titleFromPHP) renderHeaderInfo(titleFromPHP);
 });
 
 const fileInput = document.getElementById("moment_media");
 const customButton = document.getElementById("upload_media");
 const fileStatus = document.getElementById("file_status");
-
-// Open file dialog when custom button is clicked
-customButton.addEventListener("click", () => fileInput.click());
-
-// Show selected file name
-fileInput.addEventListener("change", () => {
-  if (fileInput.files.length > 0) {
-    fileStatus.textContent = "";
-  } else {
-    fileStatus.textContent = "No file chosen";
-  }
-});
-
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
 
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        // Crop center square
-        const size = Math.min(img.width, img.height);
-        const sx = (img.width - size) / 2;
-        const sy = (img.height - size) / 2;
+if (customButton && fileInput) {
+  customButton.addEventListener("click", () => fileInput.click());
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-          img,
-          sx,
-          sy,
-          size,
-          size,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      if (fileStatus) fileStatus.textContent = "";
+    } else {
+      if (fileStatus) fileStatus.textContent = "No file chosen";
+    }
+  });
+
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            // Crop center square
+            const size = Math.min(img.width, img.height);
+            const sx = (img.width - size) / 2;
+            const sy = (img.height - size) / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(
+              img,
+              sx,
+              sy,
+              size,
+              size,
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btnSealed = document.getElementById("filter-sealed");
+  const btnUnsealed = document.getElementById("filter-unsealed");
+  const allMoments = document.querySelectorAll(".moment_container");
+
+  if (btnSealed && btnUnsealed) {
+    
+    // Switch button visual style
+    function setActiveButton(activeBtn, inactiveBtn) {
+      activeBtn.classList.remove("button_no_fill_small");
+      activeBtn.classList.add("button_small");
+      
+      inactiveBtn.classList.remove("button_small");
+      inactiveBtn.classList.add("button_no_fill_small");
+    }
+
+    // Hide/Show items based on data-status
+    function filterMoments(status) {
+      allMoments.forEach((moment) => {
+        // If the status = the button, show it
+        if (moment.dataset.status === status) {
+          moment.style.display = "block";
+        } else {
+          moment.style.display = "none";
+        }
+      });
+    }
+
+    btnSealed.addEventListener("click", () => {
+      setActiveButton(btnSealed, btnUnsealed);
+      filterMoments("sealed");
+    });
+
+    btnUnsealed.addEventListener("click", () => {
+      setActiveButton(btnUnsealed, btnSealed);
+      filterMoments("unsealed");
+    });
+
+    if (btnSealed.classList.contains("button_small")) {
+        filterMoments("sealed");
+    } else {
+        filterMoments("unsealed");
+    }
   }
 });

@@ -2,8 +2,12 @@
 
 function renderMoment($moment_number, $moment_seal_date, $moment_seal_open, $moment_status)
 {
-    echo "<div class = \"moment_container\">
-        <div class = \" moment_top\">
+    // Convert status to lowercase for the JS filter
+    $status_lower = strtolower($moment_status);
+    
+    // Note: added data-status="$status_lower" here for the JavaScript
+    echo "<div class=\"moment_container\" data-status=\"$status_lower\">
+        <div class=\"moment_top\">
             <h4> $moment_status Moment #$moment_number </h4>
             <div class = \"actions\">
                 <a href=\"edit_moment.php\" class = \"action\">
@@ -40,7 +44,7 @@ function renderMoment($moment_number, $moment_seal_date, $moment_seal_open, $mom
 function renderRecentMoment($moment_number, $moment_seal_date, $moment_seal_open, $moment_status)
 {
     echo "<div class = \"recent_moment_container\">
-        <div class = \" moment_top\">
+        <div class = \"moment_top\">
             <h5> $moment_status Moment #$moment_number </h5>
         </div>
 
@@ -69,7 +73,10 @@ function renderRecentlySealed()
     echo "<div class=\"recently_sealed\">
             <h3> Recently Sealed </h3>";
     
-    renderRecentMoment("1", "2", "3", "Sealed");
+    // Add two static examples to match your design
+    renderRecentMoment("5", "Sept 29, 2025", "Jan 17, 2026", "Sealed");
+    renderRecentMoment("4", "Aug 26, 2025", "Feb 14, 2026", "Sealed");
 
     echo "</div>";
 }
+?>
