@@ -6,9 +6,6 @@ require_once __DIR__ . '/../includes/head.php';
 // includes the button component
 require_once __DIR__ . '/../components/button.php';
 
-// includes the capsule component
-require_once __DIR__ . '/../components/capsule.php';
-
 // include the calendar component
 require_once __DIR__ . '/../components/calendar.php';
 
@@ -39,14 +36,12 @@ require_once __DIR__ . '/../components/moment.php';
                 <div class="bottom">
                     <div class="bottom_left">
                         <h2> Upcoming Moments </h2>
-                        <?php renderCapsule("1", "2", "3");?>
-                        <?php renderCapsule("1", "2", "3");?>
-                        <?php renderCapsule("1", "2", "3");?>
+                        <?= require_once __DIR__ . '/../components/capsule.php'; ?>
                     </div>
                     <div class="bottom_right">
                         <?php renderCalendar(); ?>
                         <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
-                        <?php renderRecentlySealed(); ?>
+                        <?php renderRecentlySealed($conn); ?>
                     </div>
 
                 </div>

@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let day = 1; day <= daysInMonth; day++) {
       const today = new Date();
-      
+
       // Always calculate Today
       const isToday =
         day === today.getDate() &&
@@ -75,10 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Only calculate Selected if we are in Interactive Mode
       let isSelected = false;
       if (isInteractive && selectedDateObj) {
-          isSelected = 
-            day === selectedDateObj.getDate() &&
-            month === selectedDateObj.getMonth() &&
-            year === selectedDateObj.getFullYear();
+        isSelected =
+          day === selectedDateObj.getDate() &&
+          month === selectedDateObj.getMonth() &&
+          year === selectedDateObj.getFullYear();
       }
 
       let className = "";
@@ -95,9 +95,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isInteractive) return;
 
     if (e.target.tagName === "P" && e.target.textContent !== "") {
-        const clickedDay = parseInt(e.target.textContent);
-        selectedDateObj = new Date(date.getFullYear(), date.getMonth(), clickedDay);
-        renderCalendar();
+      const clickedDay = parseInt(e.target.textContent);
+      selectedDateObj = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        clickedDay
+      );
+
+      const year = selectedDateObj.getFullYear();
+
+      const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
+
+      const day = String(selectedDateObj.getDate()).padStart(2, "0");
+
+      const formattedDate = `${year}-${month}-${day}`;
+
+      // Find the hidden input by ID and set the value
+      const endDateInput = document.getElementById("endDate");
+      if (endDateInput) {
+        endDateInput.value = formattedDate;
+        console.log("Open date has been set to ", formattedDate); // Check console for this
+      }
+
+      renderCalendar();
     }
   });
 

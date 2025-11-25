@@ -10,10 +10,10 @@ function renderLinkButton($text, $function, $class = "", $id = "", $img = "")
     ";
 }
 
-function renderSubmitButton($text, $function, $class = "", $id = "", $img = "", $type="submit")
+function renderSubmitButton($text, $function, $class = "", $id = "", $img = "", $type="submit", $name="update")
 {
     echo "
-        <button type=\"$type\" function=\"$function\" class=\"$class\" id=\"$id\">
+        <button type=\"$type\" function=\"$function\" class=\"$class\" id=\"$id\" name=\"$name\">
             " . (!empty($img) ? "<img width=\"32px\" height=\"32px\" src=\"$img\" alt=\"\">" : "") . "
             $text
         </button>
