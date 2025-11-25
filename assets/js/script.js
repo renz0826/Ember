@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  
   const headers = [
     {
       title: "Home",
@@ -23,8 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       title: "Moments Last",
-      description:
-        "Look back on the memories you’ve held close.",
+      description: "Look back on the memories you’ve held close.",
     },
   ];
 
@@ -107,12 +105,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const allMoments = document.querySelectorAll(".moment_container");
 
   if (btnSealed && btnUnsealed) {
-    
     // Switch button visual style
     function setActiveButton(activeBtn, inactiveBtn) {
       activeBtn.classList.remove("button_no_fill_small");
       activeBtn.classList.add("button_small");
-      
+
       inactiveBtn.classList.remove("button_small");
       inactiveBtn.classList.add("button_no_fill_small");
     }
@@ -140,62 +137,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (btnSealed.classList.contains("button_small")) {
-        filterMoments("sealed");
+      filterMoments("sealed");
     } else {
-        filterMoments("unsealed");
+      filterMoments("unsealed");
     }
   }
 });
-// Only add listener if elements exist (prevents errors on pages without upload)
-if (customButton && fileInput) {
-  // Open file dialog when custom button is clicked
-  customButton.addEventListener("click", () => fileInput.click());
-
-  // Show selected file name
-  fileInput.addEventListener("change", () => {
-    if (fileInput.files.length > 0) {
-      fileStatus.textContent = "";
-    } else {
-      fileStatus.textContent = "No file chosen";
-    }
-  });
-}
-
-const canvas = document.getElementById("canvas");
-if (canvas && fileInput) {
-  const ctx = canvas.getContext("2d");
-
-  fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          // Crop center square
-          const size = Math.min(img.width, img.height);
-          const sx = (img.width - size) / 2;
-          const sy = (img.height - size) / 2;
-
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(
-            img,
-            sx,
-            sy,
-            size,
-            size,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-          );
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-}
 
 document.addEventListener("DOMContentLoaded", function () {
   // Select ALL buttons that have a moment ID attached

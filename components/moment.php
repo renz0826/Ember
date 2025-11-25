@@ -5,14 +5,11 @@ require_once __DIR__ . '/../includes/db_connect.php';
 function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $sealImgSrc, $editAction, $deleteAction)
 {
     // Convert status to lowercase for the JS filter
-    $status_lower = strtolower($moment_status);
+    $status_lower = strtolower($status);
     
     // Note: added data-status="$status_lower" here for the JavaScript
     echo "<div class=\"moment_container\" data-status=\"$status_lower\">
         <div class=\"moment_top\">
-            <h4> $moment_status Moment #$moment_number </h4>
-    echo "<div class = \"moment_container\">
-        <div class = \" moment_top\">
             <h4> $status Moment #$momentNumber </h4>
             <div class = \"actions\">
                 <a $editAction class = \"action\">
@@ -184,4 +181,3 @@ function renderRecentlySealed($conn, $limit = 3)
     
     echo "</div>";
 }
-?>
