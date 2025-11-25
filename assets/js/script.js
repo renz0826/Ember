@@ -40,56 +40,97 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const titleFromPHP = document.documentElement.dataset.title;
-  renderHeaderInfo(titleFromPHP);
+  // Check if pageHeader exists before running to prevent errors on other pages
+  if (document.getElementById("pageHeader")) {
+    const titleFromPHP = document.documentElement.dataset.title;
+    renderHeaderInfo(titleFromPHP);
+  }
 });
 
 const fileInput = document.getElementById("moment_media");
 const customButton = document.getElementById("upload_media");
 const fileStatus = document.getElementById("file_status");
 
-// Open file dialog when custom button is clicked
-customButton.addEventListener("click", () => fileInput.click());
+// Only add listener if elements exist (prevents errors on pages without upload)
+if (customButton && fileInput) {
+  // Open file dialog when custom button is clicked
+  customButton.addEventListener("click", () => fileInput.click());
 
-// Show selected file name
-fileInput.addEventListener("change", () => {
-  if (fileInput.files.length > 0) {
-    fileStatus.textContent = "";
-  } else {
-    fileStatus.textContent = "No file chosen";
-  }
-});
+  // Show selected file name
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      fileStatus.textContent = "";
+    } else {
+      fileStatus.textContent = "No file chosen";
+    }
+  });
+}
 
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+if (canvas && fileInput) {
+  const ctx = canvas.getContext("2d");
 
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        // Crop center square
-        const size = Math.min(img.width, img.height);
-        const sx = (img.width - size) / 2;
-        const sy = (img.height - size) / 2;
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Crop center square
+          const size = Math.min(img.width, img.height);
+          const sx = (img.width - size) / 2;
+          const sy = (img.height - size) / 2;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-          img,
-          sx,
-          sy,
-          size,
-          size,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(
+            img,
+            sx,
+            sy,
+            size,
+            size,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+        };
+        img.src = e.target.result;
       };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Select ALL buttons that have a moment ID attached
+  const openButtons = document.querySelectorAll("button[data-moment-id]");
+
+  openButtons.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Get the unique ID from the clicked button
+      const momentId = this.dataset.momentId;
+
+      // Find the specific modal that matches this ID
+      const popUp = document.getElementById(`modal-${momentId}`);
+
+      if (popUp) {
+        popUp.style.display = "flex";
+      }
+    });
+  });
+
+  // Logic to close the modal when "Cancel" is clicked
+  const cancelButtons = document.querySelectorAll(".button_no_fill_cancel");
+  cancelButtons.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault(); // Stop page reload
+      const modal = this.closest(".delete-modal");
+      if (modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
 });
