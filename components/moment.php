@@ -4,65 +4,90 @@ require_once __DIR__ . '/../includes/db_connect.php';
 
 function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $sealImgSrc, $editAction, $deleteAction)
 {
-    // Convert status to lowercase for the JS filter
+
+    $viewURL = "view_moment.php?id=" . $momentNumber;
     $status_lower = strtolower($status);
+
+    // --- LOGIC: DETERMINE IF CLICKABLE ---
+    if ($status === 'Sealed') {
+        // If Sealed: Use a DIV (not clickable) and no href
+        $tag = 'div';
+        $attr = 'style="display: block; color: inherit;"'; // Maintain layout but no link
+    } else {
+        // If Unsealed: Use an Anchor (clickable) with href
+        $tag = 'a';
+        $attr = "href=\"$viewURL\" style=\"text-decoration: none; color: inherit; display: block;\"";
+    }
     
-    // Note: added data-status="$status_lower" here for the JavaScript
-    echo "<div class=\"moment_container\" data-status=\"$status_lower\">
-        <div class=\"moment_top\">
+    echo "<div class=\"moment_container\" data-status=\"$status_lower\">";
+    
+    echo "<div class=\"moment_top\">";
+    
+    echo "<$tag $attr>
             <h4> $status Moment #$momentNumber </h4>
-            <div class = \"actions\">
-                <a $editAction class = \"action\">
-                    <img src = \"/Ember/assets/icons/icon-edit.svg\" />
-                    <p> Edit </p>
-                </a>
-                <button class = \"action\" data-moment-id=\"$momentNumber\">
-                    <img src = \"/Ember/assets/icons/icon-delete.svg\" />
-                    <p> Delete </p>
-                </button>
-                <div class = \"delete-modal\" id = \"modal-$momentNumber\" style=\"display: none;\">
-                    <div class = \"pop_up_content\">
-                        <img class = \"graphic-size\" src = \"/Ember/assets/icons/icon-delete-confirmation.svg\" />
-                        <h4> Delete Moment? </h4>
-                        <p> Your moment will be permanently deleted. Pleae proceed with caution. </p>
-                        <a $deleteAction class = \"button-delete\">
-                            <img src = \"/Ember/assets/icons/icon-delete-white.svg\" />
+          </$tag $attr>";
+
+    echo "<div class=\"actions\">
+            <a $editAction class=\"action\">
+                <img src=\"/Ember/assets/icons/icon-edit.svg\" />
+                <p> Edit </p>
+            </a>
+            
+            <button class=\"action\" data-moment-id=\"$momentNumber\">
+                <img src=\"/Ember/assets/icons/icon-delete.svg\" />
+                <p> Delete </p>
+            </button>
+            
+            <div class=\"delete-modal\" id=\"modal-$momentNumber\" style=\"display: none;\">
+                <div class=\"pop_up_content\">
+                    <img class=\"graphic-size\" src=\"/Ember/assets/icons/icon-delete-confirmation.svg\" />
+                    <h4> Delete Moment? </h4>
+                    <p> Your moment will be permanently deleted. Please proceed with caution. </p>
+                        <a $deleteAction class=\"button-delete\">
+                            <img src=\"/Ember/assets/icons/icon-delete-white.svg\" />
                             <h5> Delete Moment </h5>
                         </a>
-                        <a href=\"my_moments.php\" class = \"button_no_fill_cancel\">
-                            <img src = \"/Ember/assets/icons/icon-cancel-white.svg\" />
+                        <a href=\"#\" class=\"button_no_fill_cancel close-modal-btn\">
+                            <img src=\"/Ember/assets/icons/icon-cancel-white.svg\" />
                             <h5> Cancel </h5>
                         </a>
-                    </div>
                 </div>
-
             </div>
-        </div>
-
-        <div class = \"moment_bottom\">
-            <div class = \"thumbnail_container\">
+          </div>";
+          
+    echo "</div>";
+    
+    echo "<$tag $attr>";
+    
+    echo "<div class=\"moment_bottom\">
+            <div class=\"thumbnail_container\">
                 <img id=\"thumbnail\" src=\"$imgSrc\" />
                 <img class=\"$status\" src=\"/Ember/assets/images/sealed.png\">
             </div>
             <div class=\"info\">
-                <div class =\"seal_info\">
-                    <p class =\"info_title\"> Sealed On </p>
-                    <p class =\"info_main\"> $sealDate </p>
+                <div class=\"seal_info\">
+                    <p class=\"info_title\"> Sealed On </p>
+                    <p class=\"info_main\"> $sealDate </p>
                 </div>
-                <div class =\"seal_info\">
-                    <p class =\"info_title\"> Seal Breaks On </p>
-                    <p class =\"info_main\"> $openDate </p>
+                <div class=\"seal_info\">
+                    <p class=\"info_title\"> Seal Breaks On </p>
+                    <p class=\"info_main\"> $openDate </p>
                 </div>
-                <div class =\"seal_info\">
-                    <p class =\"info_title\"> Status </p>
-                    <div class =\"seal_status\">
-                        <img src =\"$sealImgSrc\">
-                        <p class =\"moment_status\"> $status </p>       
+                <div class=\"seal_info\">
+                    <p class=\"info_title\"> Status </p>
+                    <div class=\"seal_status\">
+                        <img src=\"$sealImgSrc\">
+                        <p class=\"moment_status\"> 
+                            " . (($status == 'Sealed') ? "Sealed" : "Unsealed") . "
+                        </p>       
                     </div>
                 </div>
             </div>
-        </div>
-    </div>";
+        </div>";
+        
+    echo "</$tag $attr>";
+
+    echo "</div>";
 }
 
 function renderRecentMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $sealImgSrc)
@@ -101,10 +126,9 @@ function renderRecentMoment($momentNumber, $sealDate, $openDate, $status, $imgSr
 
 function renderAllMoments($conn)
 {
-    
     $sql = "SELECT * FROM moments ORDER BY open ASC";
     $result = $conn->query($sql);
-
+    
     if ($result->num_rows > 0) {
         // Loop through every row in the database
         while ($row = $result->fetch_assoc()) {

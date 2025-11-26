@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initCustomCalendar();
+});
+
+function initCustomCalendar() {
   const monthYear = document.getElementById("month_year");
   const week = document.querySelector(".calendar_week");
   const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
@@ -6,48 +10,75 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevBtn = document.getElementById("prev");
   const nextBtn = document.getElementById("next");
 
+  // Input field that stores the date for the database
+  const endDateInput = document.getElementById("endDate");
+
   let date = new Date();
   let selectedDateObj = null;
 
-  // Get current page title
-  const titleFromPHP = document.documentElement.dataset.title;
+  // --- 1. SETUP & PERMISSIONS ---
+  const container = document.getElementById("calendar");
+  if (!container) return; // Stop if no calendar on page
 
-  // Pages allow interaction
-  const allowedPages = ["Preserve a Moment", "Edit Your Moment"];
-  const isInteractive = allowedPages.includes(titleFromPHP);
+  // Get page title to determine behavior
+  // We check the container first, then fallback to the document title
+  const titleFromPHP =
+    container.dataset.title || document.documentElement.dataset.title || "";
 
-  // Add specific class if interactive (Enables CSS hover/pointer)
+  // Define pages where the user can CLICK to change the date
+  const interactivePages = ["Preserve a Moment", "Edit Your Moment"];
+  const isInteractive = interactivePages.includes(titleFromPHP);
+
+  // Add class for CSS styling (cursor pointer, hover effects)
   if (isInteractive) {
     grid.classList.add("interactive");
   }
 
-  function renderCalendarUse(title) {
-    const setTitle = [
-      { title: "Preserve a Moment", useCase: "Seal Until..." },
-      { title: "Edit Your Moment", useCase: "Seal Until..." },
-    ];
-    const setDate = document.getElementById("setDate");
-    const page = setTitle.find((c) => c.title === title);
+  // --- 2. PRE-LOAD DATE (Fix for Edit/View Pages) ---
+  // If the hidden input has a value (e.g. "2025-11-30"), load it immediately.
+  if (endDateInput && endDateInput.value) {
+    const parts = endDateInput.value.split("-");
+    if (parts.length === 3) {
+      // Create date (Note: Month is 0-indexed in JS, so subtract 1)
+      // Format: Year, MonthIndex, Day
+      selectedDateObj = new Date(parts[0], parts[1] - 1, parts[2]);
 
-    if (page && setDate) {
+      // Move the calendar view to the month of the selected date
+      date = new Date(selectedDateObj);
+    }
+  }
+
+  // --- 3. HEADER TEXT LOGIC ---
+  function renderCalendarUse(title) {
+    const setDate = document.getElementById("setDate");
+    if (!setDate) return;
+
+    // Customize header based on page
+    if (title === "Preserve a Moment" || title === "Edit Your Moment") {
       setDate.innerHTML = `
-        <h3 style="margin-bottom: 20px">${page.useCase}</h3>
+        <h3 style="margin-bottom: 20px">Seal Until...</h3>
         <hr>
         `;
+    } else {
+      // Default or View Page
+      setDate.innerHTML = "";
     }
   }
 
   renderCalendarUse(titleFromPHP);
 
+  // --- 4. RENDER FUNCTION ---
   function renderCalendar() {
     grid.innerHTML = "";
 
+    // Render Weekdays
     let html = "";
     for (const day of days) {
       html += `<p>${day}</p>`;
     }
     week.innerHTML = html;
 
+    // Update Month/Year Text
     const year = date.getFullYear();
     const month = date.getMonth();
 
@@ -56,25 +87,29 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "numeric",
     });
 
+    // Calculate Days
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+    // Empty slots for previous month
     for (let i = 0; i < firstDay; i++) {
       grid.innerHTML += `<div></div>`;
     }
 
+    // Days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const today = new Date();
 
-      // Always calculate Today
+      // Check for "Today"
       const isToday =
         day === today.getDate() &&
         month === today.getMonth() &&
         year === today.getFullYear();
 
-      // Only calculate Selected if we are in Interactive Mode
+      // Check for "Selected" (The blue highlight)
+      // We highlight if a selectedDateObj exists, regardless of page type
       let isSelected = false;
-      if (isInteractive && selectedDateObj) {
+      if (selectedDateObj) {
         isSelected =
           day === selectedDateObj.getDate() &&
           month === selectedDateObj.getMonth() &&
@@ -89,38 +124,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Gate the Click Listener
+  // --- 5. CLICK LISTENER (Gated by Interactivity) ---
   grid.addEventListener("click", (e) => {
-    // If not on allowed page, stop immediately
+    // Stop immediately if this is a Read-Only page (View Moment)
     if (!isInteractive) return;
 
     if (e.target.tagName === "P" && e.target.textContent !== "") {
       const clickedDay = parseInt(e.target.textContent);
+
+      // Update the internal object
       selectedDateObj = new Date(
         date.getFullYear(),
         date.getMonth(),
         clickedDay
       );
 
+      // --- UPDATE HIDDEN INPUT FOR DATABASE ---
       const year = selectedDateObj.getFullYear();
-
       const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
-
       const day = String(selectedDateObj.getDate()).padStart(2, "0");
-
       const formattedDate = `${year}-${month}-${day}`;
 
-      // Find the hidden input by ID and set the value
-      const endDateInput = document.getElementById("endDate");
       if (endDateInput) {
         endDateInput.value = formattedDate;
-        console.log("Open date has been set to ", formattedDate); // Check console for this
+        // console.log("Date updated to:", formattedDate);
       }
 
+      // Re-render to show the new blue block
       renderCalendar();
     }
   });
 
+  // --- 6. NAVIGATION LISTENERS ---
   prevBtn.addEventListener("click", () => {
     date.setMonth(date.getMonth() - 1);
     renderCalendar();
@@ -131,5 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCalendar();
   });
 
+  // Initial Render
   renderCalendar();
-});
+}

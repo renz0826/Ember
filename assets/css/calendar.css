@@ -65,33 +65,33 @@
 }
 
 .calendar_grid p {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    cursor: default; 
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: default;
 }
 
 .calendar_grid.interactive p {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .calendar_grid.interactive p:hover:not(.today):not(.selected) {
-    background-color: rgba(255, 255, 255, 0.1); 
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .today {
-    background-color: var(--color-selected-bg);
-    color: var(--color-white);
-    font-weight: bold;
+  background-color: var(--color-selected-bg);
+  color: var(--color-white);
+  font-weight: bold;
 }
 
 .selected {
-    background-color: #169DD9;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(49, 54, 207, 0.4);
+  background-color: #169dd9;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(49, 54, 207, 0.4);
 }

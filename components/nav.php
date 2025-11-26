@@ -1,26 +1,34 @@
 <?php
-
-
-// Nav bar
-require_once __DIR__ . '/../includes/head.php';
+// nav.php
 
 $current = basename($_SERVER['PHP_SELF']);
 
+// Default Static Map
 $map = [
   'home.php' => 'Home',
   'preserve_moment.php' => 'Preserve a Moment',
   'my_moments.php' => 'My Moments',
-  'edit_moment.php' => 'Edit Your Moment',
-  'view_moment.php' => 'Moments Last'
+  'edit_moment.php' => 'Edit Your Moment'
+  // view_moment.php is handled dynamically below
 ];
 
-$currentTitle = $map[$current] ?? null;
+// Determine Title Logic
+if (isset($pageTitleOverride)) {
+    // Use the dynamic title from view_moment.php
+    $currentTitle = $pageTitleOverride;
+} else {
+    // Use the static map
+    $currentTitle = $map[$current] ?? 'Ember';
+}
 
+// Include Head (CSS, Meta tags)
+require_once __DIR__ . '/../includes/head.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en"
-  data-title="<?= htmlspecialchars($currentTitle ?? '') ?>">
+  data-title="<?= htmlspecialchars($currentTitle ?? '') ?>"
+  data-description="<?= htmlspecialchars($pageDescriptionOverride ?? '') ?>">
 
 <head>
   <meta charset="utf-8" />
