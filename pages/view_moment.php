@@ -96,7 +96,6 @@ require_once __DIR__ . '/../components/moment.php';
 
                 <div class="bottom_right">
                     <?php renderCalendar($row['seal']); ?>
-                    <?php renderRecentlySealed($conn); ?>
                 </div>
             </div>
         </div>
