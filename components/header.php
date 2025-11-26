@@ -18,8 +18,8 @@ require_once __DIR__ . '/../includes/head.php';
             <div id="pageHeader"></div>
         </div>
         <div id="profile-bar">
-            <img src="haha.png" />
-            <h5>Username</h5>
+            <img src="/Ember/assets/images/profile.png" />
+            <h5>EmberUser2025</h5>
         </div>
     </header>
 </body>
