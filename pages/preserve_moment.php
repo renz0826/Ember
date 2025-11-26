@@ -103,25 +103,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             required>
                     </div>
 
-                    <div class="input_group">
-                        <label for="moment_desription"> Frame the Feeling </label>
-                        <input type="file" id="moment_media" name="moment_media" accept="image/*"
-                            style="display: none;">
+                    <div class="preview_desc">
+                        <div class="input_group">
+                            <label for="moment_description"> Frame the Feeling </label>
+                            <input type="file" id="moment_media" name="moment_media" accept="image/*"
+                                style="display: none;">
 
-                        <div class="media_preview">
-                            <canvas id="canvas" width="300px" height="300px" style="border-radius: 10px;"></canvas>
-                            <span id="file_status" style="display: block; margin-top: 10px; color: #888;">No file
-                                chosen.</span>
+                            <div class="media_preview">
+                                <div class="canvas_container">
+                                    <canvas id="canvas"></canvas>
+                                </div>
+                                <span id="file_status" style="display: block; margin-top: 10px; color: #888;">No file
+                                    chosen.</span>
+                            </div>
+
+                            <?php renderUploadButton('Add Media', '', 'button_no_fill', 'upload_media', '/Ember/assets/icons/icon-media.svg'); ?>
                         </div>
 
-                        <?php renderUploadButton('Add Media', '', 'button_no_fill', 'upload_media', '/Ember/assets/icons/icon-media.svg'); ?>
+                        <div class="input_group">
+                            <label for="moment_description"> Tell the Story </label>
+                            <textarea id="moment_description" name="moment_description" placeholder="Tell the story..."
+                                required></textarea>
+                        </div>
                     </div>
 
-                    <div class="input_group">
-                        <label for="moment_description"> Tell the Story </label>
-                        <textarea id="moment_description" name="moment_description" placeholder="Tell the story..."
-                            required></textarea>
-                    </div>
                 </div>
 
                 <div class="bottom_right">
