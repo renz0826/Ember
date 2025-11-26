@@ -1,8 +1,6 @@
 <?php
-
 $sql = "SELECT * FROM moments ORDER BY open ASC";
 $result = $conn -> query($sql);
-
 ?>
 
 <!DOCTYPE html>
@@ -13,12 +11,14 @@ $result = $conn -> query($sql);
 
     <?php while ($row = $result -> fetch_assoc()): ?>
     <?php
-            $momentID = htmlspecialchars($row['id']);
+                // 1. Setup Data
+                $momentID = htmlspecialchars($row['id']);
         $viewURL = "view_moment.php?id=" . $momentID;
 
         $openDate = new DateTime($row['open']);
         $today = new DateTime('today');
 
+        // 2. Determine Status
         if ($today >= $openDate) {
             $isReady = true;
             $daysLeft = 0;
@@ -27,10 +27,22 @@ $result = $conn -> query($sql);
             $interval = $today -> diff($openDate);
             $daysLeft = $interval -> days;
         }
+
+        // 3. LOGIC: Determine Tag & Attributes based on $isReady
+        if ($isReady) {
+            // If Ready (Unsealed): Make it a Link
+            $tag = 'a';
+            $attr = 'href="' . $viewURL . '" style="text-decoration: none; color: inherit; display: block;"';
+        } else {
+            // If Not Ready (Sealed): Make it a Div (Not clickable)
+            $tag = 'div';
+            $attr = 'style="display: block; color: inherit; cursor: default;"';
+        }
         ?>
 
-    <a href="<?= $viewURL ?>"
-        style="text-decoration: none; color: inherit">
+    <<?= $tag ?>
+        <?= $attr ?>>
+
         <div class="capsule_container">
             <h4> The seal breaks on
                 <?= $row['open']; ?>
@@ -67,7 +79,9 @@ $result = $conn -> query($sql);
                 </div>
             </div>
         </div>
-    </a>
+
+    </<?= $tag ?>>
+
     <?php endwhile; ?>
 
     <?php else: ?>
