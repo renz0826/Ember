@@ -9,9 +9,11 @@ $result = $conn -> query($sql);
 <html lang="en">
 
 <body>
+    <?php if ($result->num_rows > 0): ?>
+
     <?php while ($row = $result -> fetch_assoc()): ?>
     <?php
-        $momentID = htmlspecialchars($row['id']);
+            $momentID = htmlspecialchars($row['id']);
         $viewURL = "view_moment.php?id=" . $momentID;
 
         $openDate = new DateTime($row['open']);
@@ -25,11 +27,11 @@ $result = $conn -> query($sql);
             $interval = $today -> diff($openDate);
             $daysLeft = $interval -> days;
         }
-
         ?>
+
     <a href="<?= $viewURL ?>"
         style="text-decoration: none; color: inherit">
-        <div class=" capsule_container">
+        <div class="capsule_container">
             <h4> The seal breaks on
                 <?= $row['open']; ?>
             </h4>
@@ -41,25 +43,25 @@ $result = $conn -> query($sql);
                 <div class="timer">
                     <h4 style="margin-bottom: 10px;">
                         <?php
-                        if ($isReady) {
-                            echo "Unseal Your Moment";
-                        } else {
-                            if ($daysLeft == 1) {
-                                $daysDisplay = "Day Left";
+                            if ($isReady) {
+                                echo "Unseal Your Moment";
                             } else {
-                                $daysDisplay = "Days Left";
+                                if ($daysLeft == 1) {
+                                    $daysDisplay = "Day Left";
+                                } else {
+                                    $daysDisplay = "Days Left";
+                                }
+                                echo $daysLeft . " " . $daysDisplay;
                             }
-                            echo $daysLeft . " " . $daysDisplay;
-                        }
         ?>
                     </h4>
                     <small class="caption">
                         <?php
-            if ($isReady) {
-                echo "The moment is ready to be unsealed";
-            } else {
-                echo "The moment is waiting for its perfect day";
-            }
+        if ($isReady) {
+            echo "The moment is ready to be unsealed";
+        } else {
+            echo "The moment is waiting for its perfect day";
+        }
         ?>
                     </small>
                 </div>
@@ -67,6 +69,13 @@ $result = $conn -> query($sql);
         </div>
     </a>
     <?php endwhile; ?>
+
+    <?php else: ?>
+    <div class='empty_state_container'>
+        <h3>No Moments Yet</h3>
+        <p style="color: var(--color-gray);">It seems you haven't preserved any memories yet.</p>
+    </div>
+    <?php endif; ?>
 </body>
 
 </html>

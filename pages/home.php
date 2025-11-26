@@ -36,7 +36,7 @@ require_once __DIR__ . '/../components/moment.php';
                 <div class="bottom">
                     <div class="bottom_left">
                         <h2> Upcoming Moments </h2>
-                        <?= require_once __DIR__ . '/../components/capsule.php'; ?>
+                        <?php require_once __DIR__ . '/../components/capsule.php'; ?>
                     </div>
                     <div class="bottom_right">
                         <?php renderCalendar(); ?>
