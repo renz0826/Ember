@@ -63,13 +63,8 @@ HTML;
             <div class="calendar_grid"></div>
         </div>
 
-        <h1>Add to Calendar</h1>
-        <input type="text" id="capsuleName" placeholder="Event Name" value="My Test Event"><br><br>
-        <!-- <input type="date" id="startDate"> <input type="time" id="startTime"><br><br> -->
-        <input type="date" id="endDate"> <input type="time" id="endTime"><br><br>
-
-        <button onclick="handleAuthClick()">Add to Calendar</button>
-    </div>
+        <!-- For taking end date input -->
+        <input type="date" id="endDate" name="endDate"> <br><br>
 
     <script src="/Ember/assets/js/calendar.js"></script>
 </body>

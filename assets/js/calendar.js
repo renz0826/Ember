@@ -54,47 +54,63 @@ async function initializeGapiClient() {
 // ==========================================
 
 async function handleAuthClick() {
-  // Safety Check
   if (!gapiInited || !gisInited) {
     alert("Google API not ready yet. Please refresh the page.");
-    return;
+    throw new Error("gapi/gis not initialized");
   }
 
-  tokenClient.callback = async (resp) => {
-    if (resp.error) {
-      throw resp;
+  return new Promise((resolve, reject) => {
+    // Setup callback that will run when requestAccessToken completes
+    tokenClient.callback = async (resp) => {
+      if (resp.error) {
+        // user denied consent or an error occurred
+        console.error("TokenClient callback error:", resp);
+        return reject(resp);
+      }
+
+      try {
+        const res = await createCalendarEvent(); // createCalendarEvent must return a promise
+        resolve(res);
+      } catch (err) {
+        reject(err);
+      }
+    };
+
+    // If there's no token, request access (this must run during user's click gesture)
+    if (gapi.client.getToken() === null) {
+      try {
+        tokenClient.requestAccessToken({ prompt: "consent" });
+        // requestAccessToken() will immediately return; resolution happens in tokenClient.callback
+      } catch (err) {
+        // If requestAccessToken throws synchronously (rare), reject
+        reject(err);
+      }
+    } else {
+      // token already exists — call createCalendarEvent directly and resolve/reject accordingly
+      createCalendarEvent().then(resolve).catch(reject);
     }
-    await createCalendarEvent();
-  };
-
-  if (gapi.client.getToken() === null) {
-    tokenClient.requestAccessToken({ prompt: "consent" });
-  } else {
-    await createCalendarEvent();
-  }
+  });
 }
 
-function convertToISO(dateStr, timeStr) {
-  const [day, month, year] = dateStr.split("/");
-  const isoString = new Date(`${year}-${month}-${day}T${timeStr}:00`).toISOString();
-  return isoString;
+function convertToISO(dateString, timeString) {
+  // dateString = "DD/MM/YYYY"
+  const [day, month, year] = dateString.split("/");
+  return `${year}-${month}-${day}T${timeString}:00`;
 }
 
 
 async function createCalendarEvent() {
-  const capsuleName = document.getElementById("capsuleName").value;
+  const capsuleName = document.getElementById("moment_title").value;
 
-  // Get current date in DD-MM-YYYY format
   const now = new Date();
-  const startDate = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
+  const startDate = now.toLocaleDateString("en-GB"); 
   const startTime = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
-
   const endDate = document.getElementById("endDate").value;
-  const endTime = document.getElementById("endTime").value;
-
-  if (!startDate || !startTime || !endDate || !endTime) {
+  
+  if (!endDate) {
     alert("Please fill in all date/time fields.");
-    return;
+    // Return a rejected Promise so upstream `await` can catch it
+    return Promise.reject(new Error("Missing fields"));
   }
 
   const event = {
@@ -104,25 +120,63 @@ async function createCalendarEvent() {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
     end: {
-      dateTime: `${endDate}T${endTime}:00`,
+      dateTime: `${endDate}T00:00:00+08:00`, // already includes offset
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
   };
 
   try {
-    const request = await gapi.client.calendar.events.insert({
+    const response = await gapi.client.calendar.events.insert({
       calendarId: "primary",
       resource: event,
     });
 
-    console.log("Success!", request);
+    console.log("Success!", response);
     alert("Event created successfully!");
-    window.open(request.result.htmlLink, "_blank");
+    // open link in new tab
+    if (response && response.result && response.result.htmlLink) {
+      window.open(response.result.htmlLink, "_blank");
+    }
+    return response;
   } catch (err) {
     console.error("Error creating event:", err);
     alert("Failed to create event. Check console for details.");
+    throw err; // for debug
   }
 }
+
+async function submitMoment(event) {
+  event.preventDefault(); 
+
+  const btn = document.getElementById("seal_moment");
+  if (btn) btn.disabled = true;
+  try {
+    await handleAuthClick();
+
+    // success -> now submit form to PHP
+    document.getElementById("moment_form").submit();
+
+  } catch (err) {
+    console.error("Failed to create calendar event:", err);
+    alert("Failed to create calendar event. Moment not submitted.");
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+// override even if PHP output stays the same
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("seal_moment");
+  if (!btn) return;
+  // remove inline onclick (optional)
+  btn.onclick = null;
+
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await submitMoment(e); // uses the same function above
+  });
+});
+
 
 // ==========================================
 // PART 4: CUSTOM CALENDAR UI LOGIC
@@ -221,35 +275,50 @@ function initCustomCalendar() {
 
   // Gate the Click Listener
   grid.addEventListener("click", (e) => {
-    // If not on allowed page, stop immediately
-    if (!isInteractive) return;
+  // If not on allowed page, stop immediately
+  if (!isInteractive) return;
 
-    if (e.target.tagName === "P" && e.target.textContent !== "") {
-      const clickedDay = parseInt(e.target.textContent);
-      selectedDateObj = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        clickedDay
-      );
+  if (e.target.tagName === "P" && e.target.textContent !== "") {
 
-      const year = selectedDateObj.getFullYear();
+    const clickedDay = parseInt(e.target.textContent);
 
-      const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
+    // Build the clicked date object
+    const clickedDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      clickedDay
+    );
 
-      const day = String(selectedDateObj.getDate()).padStart(2, "0");
+    // Build today's date at midnight
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-      const formattedDate = `${year}-${month}-${day}`;
-
-      // Find the hidden input by ID and set the value
-      const endDateInput = document.getElementById("endDate");
-      if (endDateInput) {
-        endDateInput.value = formattedDate;
-        console.log("Open date has been set to ", formattedDate); // Check console for this
-      }
-
-      renderCalendar();
+    // BLOCK if clicked date is earlier than today
+    if (clickedDate < today) {
+      console.warn("Past dates are not allowed.");
+      return; // STOP here (do not set endDate)
     }
-  });
+
+    // Continue as normal (valid future or today)
+    selectedDateObj = clickedDate;
+
+    const year = selectedDateObj.getFullYear();
+    const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(selectedDateObj.getDate()).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // Set hidden input
+    const endDateInput = document.getElementById("endDate");
+    if (endDateInput) {
+      endDateInput.value = formattedDate;
+      console.log("Open date has been set to", formattedDate);
+    }
+
+    renderCalendar();
+  }
+});
+
 
   prevBtn.addEventListener("click", () => {
     date.setMonth(date.getMonth() - 1);
