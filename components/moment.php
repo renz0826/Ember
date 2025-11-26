@@ -167,7 +167,9 @@ function renderRecentlySealed($conn, $limit = 3)
     echo "<div class=\"recently_sealed\">
             <h3> Recently Sealed </h3>";
 
-    $sql = "SELECT * FROM moments ORDER BY open ASC LIMIT ?";
+    // FIX: Added "WHERE open > CURRENT_DATE"
+    // This filters the database results to only show future (Sealed) moments
+    $sql = "SELECT * FROM moments WHERE open > CURRENT_DATE ORDER BY open ASC LIMIT ?";
     
     if ($stmt = $conn->prepare($sql)) {
         
@@ -181,16 +183,8 @@ function renderRecentlySealed($conn, $limit = 3)
                 $id = $row['id'];
                 $img = $row['image_url'];
 
-                $today = new DateTime('today');
-                $openDateObj = new DateTime($row['open']);
-                
-                if ($today >= $openDateObj) {
-                    $statusText = "Unsealed";
-                    $sealImgSrc = "/Ember/assets/icons/icon-unsealed.svg";
-                } else {
-                    $statusText = "Sealed";
-                    $sealImgSrc = "/Ember/assets/icons/icon-sealed.svg";
-                }
+                $statusText = "Sealed";
+                $sealImgSrc = "/Ember/assets/icons/icon-sealed.svg";
 
                 $sealDateDisplay = date("F j, Y", strtotime($row['seal']));
                 $openDateDisplay = date("F j, Y", strtotime($row['open']));
@@ -198,7 +192,7 @@ function renderRecentlySealed($conn, $limit = 3)
                 renderRecentMoment($id, $sealDateDisplay, $openDateDisplay, $statusText, $img, $sealImgSrc);
             }
         } else {
-            echo "<p style='padding: 20px; color: #666;'>No moments found.</p>";
+            echo "<p style='padding: 20px; color: #666;'>No sealed moments yet.</p>";
         }
         $stmt->close();
     }
