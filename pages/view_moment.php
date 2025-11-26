@@ -76,7 +76,8 @@ require_once __DIR__ . '/../components/moment.php';
                 <div class="bottom_left">
                     <div class="read_header">
                         <h2><?= $title_display ?></h2>
-                        <a href="my_moments.php"> <img src="/Ember/assets/icons/icon-cancel-white.svg" /> </a>
+                        <a href="javascript:history.back()"> <img src="/Ember/assets/icons/icon-cancel-white.svg" />
+                        </a>
                     </div>
 
                     <div class="preview_desc">
