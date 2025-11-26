@@ -50,7 +50,7 @@ function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $s
                         <a href=\"#\" class=\"button_no_fill_cancel close-modal-btn\">
                             <img src=\"/Ember/assets/icons/icon-cancel-white.svg\" />
                             <h5> Cancel </h5>
-                        </a>
+                        </a>    
                 </div>
             </div>
           </div>";
