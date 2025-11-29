@@ -79,8 +79,8 @@ textarea,
 
 /* 1. The Container */
 .img_container {
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   overflow: hidden;
   border-radius: 8px;
   margin: 0 auto;
@@ -103,7 +103,16 @@ textarea,
   gap: 16px;
   grid-auto-flow: row;
   margin: 0 auto;
-  width: 1440px;
+  width: 1200px;
+  align-self: center;
+  padding: 50px 100px;
+}
+
+.edit_bottom_right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-self: center;
 }
 
 .read_header {

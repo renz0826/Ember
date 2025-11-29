@@ -6,7 +6,7 @@ nav {
   width: 280px;
   height: 100vh;
   background: var(--gradient-foreground);
-  border-radius: 0 24px 0 24px;
+  border-radius: 0 24px 24px 0;
   padding: 48px 15px 0 15px;
 }
 

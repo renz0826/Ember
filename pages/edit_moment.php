@@ -70,28 +70,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <div class="left">
+        <?php require_once __DIR__ . '/../components/nav.php'; ?>
+    </div>
     <main>
-        <div class="top">
-            <?php require_once __DIR__ . '/../components/header.php'; ?>
-        </div>
-        <form class="edit_bottom" action="" method="POST">
-            <?php require_once __DIR__ . '/../components/nav.php'; ?>
-            <input type="hidden" name="id"
-                value="<?= htmlspecialchars($row['id']) ?>">
+        <div class="right">
+            <div class="top">
+                <?php require_once __DIR__ . '/../components/header.php'; ?>
+            </div>
+            <form class="edit_bottom" action="" method="POST">
 
-            <div class="right">
+                <input type="hidden" name="id"
+                    value="<?= htmlspecialchars($row['id']) ?>">
                 <div class="edit_bottom_left">
                     <?php renderCalendar($row['open']); ?>
                 </div>
 
-                <div class="bottom_right">
+                <div class="edit_bottom_right">
                     <?php renderSubmitButton('Update Seal Time', '', 'button', 'update', '/Ember/assets/icons/icon-lock.svg'); ?>
 
                     <?php renderLinkButton('Cancel', 'home.php', 'button_no_fill', '', '/Ember/assets/icons/icon-cancel.svg'); ?>
                 </div>
-            </div>
 
-        </form>
+            </form>
+        </div>
+
 
     </main>
 </body>

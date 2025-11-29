@@ -126,6 +126,7 @@ main {
   gap: 10px;
   max-width: 1200px;
   margin-left: 296px;
+  margin-bottom: 10px;
 }
 
 .right {
@@ -152,7 +153,7 @@ main {
 }
 
 .bottom_left {
-  height: fit-content;
+  height: 100%;
 }
 
 /* Utility color classes */
@@ -396,8 +397,8 @@ a {
 }
 
 canvas {
-  width: 300px;
-  height: 300px;
+  width: 600px;
+  height: 600px;
   border-radius: 12px;
   display: flex;
   align-self: center;
@@ -416,7 +417,7 @@ canvas {
 
   main {
     justify-self: center;
-    margin-left: 282px;
+    margin-left: 270px;
     max-width: 1200px;
   }
 }

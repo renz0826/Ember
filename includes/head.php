@@ -11,7 +11,6 @@ echo <<<HTML
   <link rel="icon" href="/Ember/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/Ember/assets/css/global.css">
   <link rel="stylesheet" href="/Ember/assets/css/pages.css">
-  <link rel="stylesheet" href="/Ember/assets/components.css">
   <script src="/Ember/assets/js/script.js" defer></script>
 </head>
 HTML;
