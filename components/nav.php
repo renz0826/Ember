@@ -9,25 +9,27 @@ $map = [
   'preserve_moment.php' => 'Preserve a Moment',
   'my_moments.php' => 'My Moments',
   'edit_moment.php' => 'Edit Your Moment'
-  // view_moment.php is handled dynamically below
 ];
 
 // Determine Title Logic
 if (isset($pageTitleOverride)) {
-    // Use the dynamic title from view_moment.php
+    // Use the dynamic title from view_moment.php or similar
     $currentTitle = $pageTitleOverride;
 } else {
     // Use the static map
     $currentTitle = $map[$current] ?? 'Ember';
 }
 
-// Include Head (CSS, Meta tags)
+// Ensure no extra spaces
+$currentTitle = trim($currentTitle);
+
+// Include Head (CSS, Meta tags) if not already included
+// Note: Be careful if head.php also has <!DOCTYPE html>
 require_once __DIR__ . '/../includes/head.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en"
-  data-title="<?= htmlspecialchars($currentTitle ?? '') ?>"
+<html lang="en" data-title="<?= htmlspecialchars($currentTitle) ?>"
   data-description="<?= htmlspecialchars($pageDescriptionOverride ?? '') ?>">
 
 <head>
