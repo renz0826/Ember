@@ -37,16 +37,20 @@ $result = $conn -> query($sql);
             // If Not Ready (Sealed): Make it a Div (Not clickable)
             $tag = 'div';
             $attr = 'style="display: block; color: inherit; cursor: default;"';
+
+           
         }
+
+        $openDateDisplay = date("F j, Y", strtotime($row['open']));
         ?>
 
 
 
     <div class="capsule_container">
         <h4> The seal breaks on
-            <?= $row['open']; ?>
+            <?= $openDateDisplay; ?>
         </h4>
-        <p> The moment is waiting to be unsealed.</p>
+        <p> The moment is yet to be unsealed.</p>
         <<?= $tag ?>
             <?= $attr ?>>
             <div class="main_capsule">
