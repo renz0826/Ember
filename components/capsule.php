@@ -40,15 +40,15 @@ $result = $conn -> query($sql);
         }
         ?>
 
-    <<?= $tag ?>
-        <?= $attr ?>>
 
-        <div class="capsule_container">
-            <h4> The seal breaks on
-                <?= $row['open']; ?>
-            </h4>
-            <p> The moment is waiting to be unsealed.</p>
 
+    <div class="capsule_container">
+        <h4> The seal breaks on
+            <?= $row['open']; ?>
+        </h4>
+        <p> The moment is waiting to be unsealed.</p>
+        <<?= $tag ?>
+            <?= $attr ?>>
             <div class="main_capsule">
                 <img src="/Ember/assets/images/capsule.png" />
 
@@ -78,9 +78,10 @@ $result = $conn -> query($sql);
                     </small>
                 </div>
             </div>
-        </div>
+        </<?= $tag ?>>
+    </div>
 
-    </<?= $tag ?>>
+
 
     <?php endwhile; ?>
 
