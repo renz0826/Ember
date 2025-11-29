@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (page) {
       container.innerHTML = `
-      <h2>${page.title}</h2>
+      <h3>${page.title}</h3>
       <p style="color: var(--color-gray)">${page.description}</p>
     `;
     }
@@ -42,7 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (dynamicTitle) {
         container.innerHTML = `
                 <h2>${dynamicTitle}</h2>
-                <p style="color: var(--color-gray)">${dynamicDesc || ""}</p>
+                <small style="color: var(--color-gray)">${
+                  dynamicDesc || ""
+                }</small>
             `;
       } else if (container) {
         container.innerHTML = `<p>Info not found</p>`;

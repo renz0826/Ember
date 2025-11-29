@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../includes/head.php';
 
 ?>
@@ -19,7 +18,7 @@ require_once __DIR__ . '/../includes/head.php';
         </div>
         <div id="profile-bar">
             <img src="/Ember/assets/images/profile.png" />
-            <h5>EmberUser2025</h5>
+            <p>EmberUser2025</p>
         </div>
     </header>
 </body>
