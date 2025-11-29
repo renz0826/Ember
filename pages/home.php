@@ -14,7 +14,7 @@ require_once __DIR__ . '/../components/moment.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-title="Home">
 
 <head>
     <meta charset="UTF-8">
@@ -23,29 +23,30 @@ require_once __DIR__ . '/../components/moment.php';
 </head>
 
 <body>
+    <div class="left">
+        <?php require_once __DIR__ . '/../components/nav.php';?>
+    </div>
     <main>
-        <div class="left">
-            <?php require_once __DIR__ . '/../components/nav.php';?>
-
-        </div>
         <div class="right">
             <div class="top">
-                <div class="top">
-                    <?php require_once __DIR__ . '/../components/header.php'; ?>
-                </div>
-                <div class="bottom">
-                    <div class="bottom_left">
-                        <h2> Upcoming Moments </h2>
-                        <?php require_once __DIR__ . '/../components/capsule.php'; ?>
-                    </div>
-                    <div class="bottom_right">
-                        <?php renderCalendar(); ?>
-                        <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
-                        <?php renderRecentlySealed($conn); ?>
-                    </div>
-
-                </div>
+                <?php require_once __DIR__ . '/../components/header.php'; ?>
             </div>
+
+            <div class="bottom">
+                <?php require_once __DIR__ . '/../components/nav.php';?>
+                <div class="bottom_left">
+                    <h2> Upcoming Moments </h2>
+                    <?php require_once __DIR__ . '/../components/capsule.php'; ?>
+                </div>
+                <div class="bottom_right">
+                    <?php renderCalendar(); ?>
+                    <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    <?php renderRecentlySealed($conn); ?>
+                </div>
+
+            </div>
+
+        </div>
 
     </main>
 </body>

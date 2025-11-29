@@ -1,6 +1,6 @@
 <?php
-// 1. DATABASE CONNECTION (Must be first)
-require_once __DIR__ . '/../includes/db_connect.php';
+// includes the head
+require_once __DIR__ . '/../includes/head.php';
 
 // 2. INITIALIZE VARIABLES
 $row = null;
@@ -44,8 +44,6 @@ $edit_url = "edit_moment.php?id=" . $moment_id;
 $pageTitleOverride = "Moments Last " . $sealDateDisplay;
 $pageDescriptionOverride = "Look back on the memories you’ve held close.";
 
-// --- STEP 5: INCLUDE NAV (Now that variables are set) ---
-require_once __DIR__ . '/../components/nav.php';
 // Include other components
 require_once __DIR__ . '/../components/button.php';
 require_once __DIR__ . '/../components/calendar.php';
@@ -62,9 +60,10 @@ require_once __DIR__ . '/../components/moment.php';
 </head>
 
 <body>
+    <div class="left">
+        <?php require_once __DIR__ . '/../components/nav.php';?>
+    </div>
     <main>
-        <div class="left">
-        </div>
 
         <div class="right">
             <div class="top">
@@ -72,7 +71,6 @@ require_once __DIR__ . '/../components/moment.php';
             </div>
 
             <div class="bottom">
-
                 <div class="bottom_left">
                     <div class="read_header">
                         <h2><?= $title_display ?></h2>
@@ -80,26 +78,27 @@ require_once __DIR__ . '/../components/moment.php';
                         </a>
                     </div>
 
-                    <div class="preview_desc">
-                        <div class="read_img">
-                            <div class="img_container">
-                                <img src="<?= $image_src ?>"
-                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block;" />
-                            </div>
-                        </div>
-                        <div class="read_desc">
-                            <p><?= nl2br($description_display) ?></p>
+                    <div class="read_img">
+                        <div class="img_container">
+                            <img src="<?= $image_src ?>"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block;" />
                         </div>
                     </div>
-                    <?php renderLinkButton('Preserve More Moments', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    <div class="read_desc">
+                        <p><?= nl2br($description_display) ?></p>
+                    </div>
 
                 </div>
 
                 <div class="bottom_right">
                     <?php renderCalendar($row['seal']); ?>
+                    <?php renderLinkButton('Preserve More Moments', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
                 </div>
+
             </div>
         </div>
+
+
     </main>
 </body>
 

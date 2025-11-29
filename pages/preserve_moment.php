@@ -78,11 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <div class="left">
+        <?php require_once __DIR__ . '/../components/nav.php';?>
+    </div>
     <main>
-        <div class="left">
-            <?php require_once __DIR__ . '/../components/nav.php';?>
-        </div>
-
         <div class="right">
             <div class="top">
                 <?php require_once __DIR__ . '/../components/header.php'; ?>
@@ -103,28 +102,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             required>
                     </div>
 
-                    <div class="preview_desc">
-                        <div class="input_group">
-                            <label for="moment_description"> Frame the Feeling </label>
-                            <input type="file" id="moment_media" name="moment_media" accept="image/*"
-                                style="display: none;">
+                    <div class="input_group">
+                        <label for="moment_description"> Frame the Feeling </label>
+                        <input type="file" id="moment_media" name="moment_media" accept="image/*"
+                            style="display: none;">
 
-                            <div class="media_preview">
-                                <div class="canvas_container">
-                                    <canvas id="canvas"></canvas>
-                                </div>
-                                <span id="file_status" style="display: block; margin-top: 10px; color: #888;">No file
-                                    chosen.</span>
+                        <div class="media_preview">
+                            <div class="canvas_container">
+                                <canvas id="canvas"></canvas>
                             </div>
-
-                            <?php renderUploadButton('Add Media', '', 'button_no_fill', 'upload_media', '/Ember/assets/icons/icon-media.svg'); ?>
+                            <span id="file_status" style="display: block; margin-top: 10px; color: #888;">No file
+                                chosen.</span>
                         </div>
 
-                        <div class="input_group">
-                            <label for="moment_description"> Tell the Story </label>
-                            <textarea id="moment_description" name="moment_description" placeholder="Tell the story..."
-                                required></textarea>
-                        </div>
+                        <?php renderUploadButton('Add Media', '', 'button_no_fill', 'upload_media', '/Ember/assets/icons/icon-media.svg'); ?>
+                    </div>
+
+                    <div class="input_group">
+                        <label for="moment_description"> Tell the Story </label>
+                        <textarea id="moment_description" name="moment_description" placeholder="Tell the story..."
+                            required></textarea>
                     </div>
 
                 </div>
@@ -139,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </form>
         </div>
+
     </main>
 </body>
 
