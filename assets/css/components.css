@@ -5,8 +5,8 @@ nav {
   font-family: var(--font-sans-mulish);
   width: 280px;
   height: 100vh;
-  background-color: var(--color-foreground);
-  border-radius: 0 24px 24px 0;
+  background: var(--gradient-foreground);
+  border-radius: 0 24px 0 24px;
   padding: 48px 15px 0 15px;
 }
 
@@ -62,15 +62,14 @@ nav ul li a.active {
 
 header {
   display: flex;
-  height: 112px;
+  height: 100px;
   width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: 25px 30px;
-  background-color: var(--color-foreground);
-  border-radius: 18px;
-  margin-top: 20px;
+  background: var(--gradient-foreground);
+  border-radius: 0px 0px 18px 18px;
   box-sizing: border-box;
 }
 
@@ -106,6 +105,11 @@ header {
 .main_capsule {
   position: relative;
   width: 100%;
+  animation: remove-highlight 0.3s ease-in-out forwards;
+}
+
+.main_capsule:hover {
+  animation: highlight 0.3s ease-in-out forwards;
 }
 
 .main_capsule img {
@@ -118,7 +122,6 @@ header {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   background-color: var(--color-foreground);
   min-width: 250px;
   border-radius: 14px;
@@ -127,7 +130,7 @@ header {
 }
 
 .moment_container {
-  background-color: var(--color-foreground);
+  background: var(--gradient-foreground);
   border: 1px solid var(--color-gray);
   border-radius: 20px;
   padding: 22px 28px;

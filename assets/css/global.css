@@ -1,6 +1,29 @@
 /* Import webfonts (Mulish and Roboto) */
 @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700&family=Roboto:wght@300;400&display=swap");
 
+/* Animations */
+@keyframes highlight {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(none);
+  }
+  100% {
+    transform: scale(1.02);
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.2));
+  }
+}
+
+@keyframes remove-highlight {
+  0% {
+    transform: scale(1.02);
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.2));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(none);
+  }
+}
+
 /* CSS Reset */
 * {
   margin: 0;
@@ -26,8 +49,8 @@
     var(--color-primary),
     var(--color-secondary)
   );
-
   --gradient-delete: linear-gradient(135deg, #bd3131, #f36060);
+  --gradient-foreground: linear-gradient(132deg, #212121 0%, #3a3a3a 100%);
 
   /* Font stacks */
   --font-sans-mulish: "Mulish", system-ui, -apple-system, "Segoe UI",
@@ -59,18 +82,6 @@
   --fw-bold: 700;
 }
 
-@media (min-width: 1440px) {
-  :root {
-    --fs-caption: 0.75rem; /* 12px  */
-    --fs-body: 0.875rem; /* 14px */
-    --fs-subhead: 1rem; /* 16px */
-    --fs-h4: 1.25rem; /* 20px */
-    --fs-h3: 1.5rem; /* 24px */
-    --fs-h2: 1.75rem; /* 28px */
-    --fs-h1: 2.25rem; /* 36px */
-  }
-}
-
 /* Global styles */
 body {
   background-image: url("../../assets/images/bg.png");
@@ -87,6 +98,7 @@ body {
   overflow: auto;
 }
 
+/* Custom scrollbar styles */
 body::-webkit-scrollbar {
   height: 8px;
   width: 12px;
@@ -106,29 +118,30 @@ body::-webkit-scrollbar-track {
   background: var(--color-bg);
 }
 
+/* Layout components */
 main {
   width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 16px;
-}
-
-.left {
-  display: flex;
+  gap: 10px;
+  max-width: 1200px;
+  margin-left: 296px;
 }
 
 .right {
-  flex-grow: 1;
-  margin-left: 280px;
-  margin-right: 16px;
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.top {
+  width: 100%;
 }
 
 .bottom {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 3fr 1fr;
   gap: 16px;
-  margin-top: 16px;
   grid-auto-flow: row;
 }
 
@@ -240,6 +253,7 @@ a {
   text-decoration: none;
 }
 
+/* Button components */
 .button {
   background: var(--gradient-primary);
   width: 100%;
@@ -248,7 +262,7 @@ a {
   color: var(--color-white);
   font-size: var(--fs-h4);
   font-family: var(--font-sans-mulish);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 1);
   border-radius: 18px;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
   box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.35);
@@ -257,8 +271,6 @@ a {
   gap: 18px;
   justify-content: center;
   cursor: pointer;
-  filter: brightness(1);
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .button-delete {
@@ -269,7 +281,7 @@ a {
   color: var(--color-white);
   font-size: var(--fs-h4);
   font-family: var(--font-sans-mulish);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 1);
   border-radius: 18px;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
   box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.35);
@@ -278,8 +290,6 @@ a {
   gap: 18px;
   justify-content: center;
   cursor: pointer;
-  filter: brightness(1);
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .button_small {
@@ -290,7 +300,7 @@ a {
   color: var(--color-white);
   font-size: var(--fs-body);
   font-family: var(--font-sans-mulish);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 1);
   border-radius: 18px;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
   box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.35);
@@ -298,8 +308,6 @@ a {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  filter: brightness(1);
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .button_no_fill {
@@ -310,7 +318,7 @@ a {
   color: var(--color-secondary);
   font-size: var(--fs-h4);
   font-family: var(--font-sans-mulish);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 1);
   border-radius: 18px;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
   display: flex;
@@ -318,8 +326,6 @@ a {
   gap: 18px;
   justify-content: center;
   cursor: pointer;
-  filter: brightness(1);
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .button_no_fill_cancel {
@@ -330,7 +336,7 @@ a {
   color: var(--color-white);
   font-size: var(--fs-h4);
   font-family: var(--font-sans-mulish);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 1);
   border-radius: 18px;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
   display: flex;
@@ -338,8 +344,6 @@ a {
   gap: 18px;
   justify-content: center;
   cursor: pointer;
-  filter: brightness(1);
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .button_no_fill_small {
@@ -350,7 +354,7 @@ a {
   color: var(--color-secondary);
   font-size: var(--fs-body);
   font-family: var(--font-sans-mulish);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 1);
   border-radius: 18px;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.35));
   display: flex;
@@ -358,8 +362,6 @@ a {
   gap: 18px;
   justify-content: center;
   cursor: pointer;
-  filter: brightness(1);
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .button:hover,
@@ -368,10 +370,17 @@ a {
 .button_no_fill_cancel:hover,
 .button_small:hover,
 .button_no_fill_small:hover {
-  transform: scale(1.01);
-  filter: brightness(1.1);
+  animation: highlight 0.3s ease-in-out forwards;
 }
 
+.button:not(:hover),
+.button_no_fill:not(:hover),
+.button-delete:not(:hover),
+.button_no_fill_cancel:not(:hover),
+.button_small:not(:hover),
+.button_no_fill_small:not(:hover) {
+  animation: remove-highlight 0.3s ease-in-out forwards;
+}
 .canvas_container {
   width: 100%;
   height: 100%;
@@ -392,4 +401,22 @@ canvas {
   border-radius: 12px;
   display: flex;
   align-self: center;
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --fs-caption: 0.75rem; /* 12px  */
+    --fs-body: 0.875rem; /* 14px */
+    --fs-subhead: 1rem; /* 16px */
+    --fs-h4: 1.25rem; /* 20px */
+    --fs-h3: 1.5rem; /* 24px */
+    --fs-h2: 1.75rem; /* 28px */
+    --fs-h1: 2.25rem; /* 36px */
+  }
+
+  main {
+    justify-self: center;
+    margin-left: 282px;
+    max-width: 1200px;
+  }
 }
