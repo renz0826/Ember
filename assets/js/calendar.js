@@ -21,9 +21,10 @@ function initCustomCalendar() {
   if (!container) return; // Stop if no calendar on page
 
   // Get page title to determine behavior
-  // We check the container first, then fallback to the document title
-  const titleFromPHP =
+  // Fix: Added .trim() to remove accidental whitespace from PHP output
+  const rawTitle =
     container.dataset.title || document.documentElement.dataset.title || "";
+  const titleFromPHP = rawTitle.trim();
 
   // Define pages where the user can CLICK to change the date
   const interactivePages = ["Preserve a Moment", "Edit Your Moment"];
@@ -35,14 +36,11 @@ function initCustomCalendar() {
   }
 
   // --- 2. PRE-LOAD DATE (Fix for Edit/View Pages) ---
-  // If the hidden input has a value (e.g. "2025-11-30"), load it immediately.
   if (endDateInput && endDateInput.value) {
     const parts = endDateInput.value.split("-");
     if (parts.length === 3) {
-      // Create date (Note: Month is 0-indexed in JS, so subtract 1)
-      // Format: Year, MonthIndex, Day
+      // Create date (Note: Month is 0-indexed in JS)
       selectedDateObj = new Date(parts[0], parts[1] - 1, parts[2]);
-
       // Move the calendar view to the month of the selected date
       date = new Date(selectedDateObj);
     }
@@ -51,10 +49,10 @@ function initCustomCalendar() {
   // --- 3. HEADER TEXT LOGIC ---
   function renderCalendarUse(title) {
     const setDate = document.getElementById("setDate");
-    if (!setDate) return;
+    if (!setDate) return; // Safety check
 
-    // Customize header based on page
-    if (title === "Preserve a Moment" || title === "Edit Your Moment") {
+    // Fix: Use the array check instead of hardcoded strings
+    if (interactivePages.includes(title)) {
       setDate.innerHTML = `
         <h3 style="margin-bottom: 20px">Seal Until...</h3>
         <hr>
@@ -106,8 +104,7 @@ function initCustomCalendar() {
         month === today.getMonth() &&
         year === today.getFullYear();
 
-      // Check for "Selected" (The blue highlight)
-      // We highlight if a selectedDateObj exists, regardless of page type
+      // Check for "Selected"
       let isSelected = false;
       if (selectedDateObj) {
         isSelected =
@@ -126,7 +123,7 @@ function initCustomCalendar() {
 
   // --- 5. CLICK LISTENER (Gated by Interactivity) ---
   grid.addEventListener("click", (e) => {
-    // Stop immediately if this is a Read-Only page (View Moment)
+    // Stop immediately if this is a Read-Only page
     if (!isInteractive) return;
 
     if (e.target.tagName === "P" && e.target.textContent !== "") {
@@ -147,7 +144,6 @@ function initCustomCalendar() {
 
       if (endDateInput) {
         endDateInput.value = formattedDate;
-        // console.log("Date updated to:", formattedDate);
       }
 
       // Re-render to show the new blue block
