@@ -28,7 +28,7 @@ function displayMoment($momentNumber, $sealDate, $openDate, $status, $imgSrc, $s
           </$tag $attr>";
 
     echo "<div class=\"actions\">
-            <a $editAction class=\"action\">
+            <a $editAction id=\"edit\" class=\"action\">
                 <img src=\"/Ember/assets/icons/icon-edit.svg\" />
                 <p> Edit </p>
             </a>

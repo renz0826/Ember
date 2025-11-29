@@ -140,8 +140,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function filterMoments(status) {
       allMoments.forEach((moment) => {
+        // 1. Show/Hide the Moment Card based on status
         if (moment.dataset.status === status) {
           moment.style.display = "block";
+
+          // 2. LOGIC TO HIDE EDIT BUTTON
+          // We look for the 'a' tag with class 'action' inside THIS moment
+          const editBtn = moment.querySelector("a.action");
+
+          if (editBtn) {
+            if (status === "unsealed") {
+              editBtn.style.display = "none";
+            } else {
+              editBtn.style.display = "";
+            }
+          }
         } else {
           moment.style.display = "none";
         }
@@ -158,6 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       filterMoments("unsealed");
     });
 
+    // Initial Load Check
     if (btnSealed.classList.contains("button_small")) {
       filterMoments("sealed");
     } else {
