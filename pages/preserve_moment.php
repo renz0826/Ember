@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <?php endif; ?>
 
-            <form class="bottom" action="" method="POST" enctype="multipart/form-data">
+            <form id="moment_form" class="bottom" action="" method="POST" enctype="multipart/form-data">
 
                 <div class="bottom_left">
                     <div class="input_group">
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="bottom_right">
                     <?php renderCalendar(); ?>
 
-                    <?php renderSubmitButton('Seal Moment', '', 'button', 'seal_moment', '/Ember/assets/icons/icon-lock.svg'); ?>
+                    <?php renderSubmitButton('Seal Moment', 'submitMoment(event)', 'button', 'seal_moment', '/Ember/assets/icons/icon-lock.svg', 'button'); ?>
 
                     <?php renderLinkButton('Cancel', 'home.php', 'button_no_fill', 'cancel', '/Ember/assets/icons/icon-cancel.svg'); ?>
                 </div>
