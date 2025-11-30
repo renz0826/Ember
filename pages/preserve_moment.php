@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = htmlspecialchars($_POST['moment_description'] ?? '');
     
     $sealDate = date(format: 'Y-m-d');
-    $openDate = $_POST['endDate'] ?? '';
+    $openDate = $_POST['endDate'] ?? 'Y-m-d';
 
     if (empty($openDate)) {
         $message = "Please choose an open date before sealing the moment.";

@@ -10,7 +10,7 @@ function renderCalendar($initialDate = '')
     <h2 id="setDate"></h2>
 
     <input type="hidden" id="startDate" name="startDate">
-    <input type="hidden" id="endDate" name="endDate" $valAttr>
+    <input type="date" id="endDate" name="endDate" $valAttr>
 
     <div class="calendar_header">
         <h4 id="month_year"></h4>
@@ -63,8 +63,8 @@ HTML;
             <div class="calendar_grid"></div>
         </div>
 
-        <!-- For taking end date input -->
-        <input type="date" id="endDate" name="endDate"> <br><br>
+        <!-- For taking open date input -->
+        <!-- <input type="date" id="endDate" name="endDate"> <br><br> -->
 
     <script src="/Ember/assets/js/calendar.js"></script>
 </body>
