@@ -12,8 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = htmlspecialchars($_POST['moment_title'] ?? '');
     $description = htmlspecialchars($_POST['moment_description'] ?? '');
     
-    $sealDate = date('Y-m-d');
-    $openDate = $_POST['endDate'] ?? date('');
+    $sealDate = date(format: 'Y-m-d');
+    $openDate = $_POST['endDate'] ?? 'Y-m-d';
+
+    if (empty($openDate)) {
+        $message = "Please choose an open date before sealing the moment.";
+    }
 
     // B. Handle Image Upload
     $imagePath = ""; // Default if no image
@@ -93,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <?php endif; ?>
 
-            <form class="bottom" action="" method="POST" enctype="multipart/form-data">
+            <form id="moment_form" class="bottom" action="" method="POST" enctype="multipart/form-data">
 
                 <div class="bottom_left">
                     <div class="input_group">
@@ -129,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="bottom_right">
                     <?php renderCalendar(); ?>
 
-                    <?php renderSubmitButton('Seal Moment', '', 'button', 'seal_moment', '/Ember/assets/icons/icon-lock.svg'); ?>
+                    <?php renderSubmitButton('Seal Moment', 'submitMoment(event)', 'button', 'seal_moment', '/Ember/assets/icons/icon-lock.svg', 'button'); ?>
 
                     <?php renderLinkButton('Cancel', 'home.php', 'button_no_fill', 'cancel', '/Ember/assets/icons/icon-cancel.svg'); ?>
                 </div>
