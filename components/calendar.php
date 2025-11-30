@@ -28,6 +28,8 @@ function renderCalendar($initialDate = '')
         <div class="calendar_grid"></div>
     </div>
 </div>
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
 
 <script src="/Ember/assets/js/calendar.js" defer></script>
 <link rel="stylesheet" href="/Ember/assets/css/calendar.css">
