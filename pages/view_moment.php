@@ -2,11 +2,9 @@
 // includes the head
 require_once __DIR__ . '/../includes/head.php';
 
-// 2. INITIALIZE VARIABLES
 $row = null;
 $moment_id = 0;
 
-// --- STEP 1: CAPTURE ID AND FETCH DATA ---
 if (isset($_GET['id'])) {
     $moment_id = (int) $_GET['id'];
     
@@ -26,12 +24,10 @@ if (isset($_GET['id'])) {
     }
 }
 
-// --- STEP 2: HANDLE NOT FOUND ---
 if (!$row) {
     exit("<h1>Moment Not Found</h1><p>The moment ID was missing or invalid. Please return to the home page.</p>");
 }
 
-// --- STEP 3: PREPARE DISPLAY VARIABLES ---
 $sealDateDisplay = date("F j, Y", strtotime($row['seal']));
 $openDateDisplay = date("F j, Y", strtotime($row['open']));
 $image_src = htmlspecialchars($row['image_url']);
@@ -39,8 +35,6 @@ $title_display = htmlspecialchars($row['title']);
 $description_display = htmlspecialchars($row['description']);
 $edit_url = "edit_moment.php?id=" . $moment_id;
 
-// --- STEP 4: DEFINE DYNAMIC HEADER OVERRIDES ---
-// This makes the header look like your image: "Moments Last June 18, 2024"
 $pageTitleOverride = "Moments Last " . $sealDateDisplay;
 $pageDescriptionOverride = "Look back on the memories you’ve held close.";
 

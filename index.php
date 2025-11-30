@@ -44,12 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- container for loading screen -->
     <div id="loading-screen">
         <div class="loader-content">
-            <img src="assets/images/logo-main.png" alt="" class= "loader-logo">
+            <img src="assets/images/logo-main.png" alt="" class="loader-logo">
             <div class="spinner"></div>
             <p class="loading-text">Logging in...</p>
         </div>
     </div>
-    
+
     <!-- container for login input fields -->
     <div class="background-container">
         <div class="login">
