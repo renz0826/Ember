@@ -1,70 +1,72 @@
-//this script validates username and password fields, displaying custom error messages
-//and visual indicators (borders) to guide users before form submission.
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("loginForm");
+  const username = document.getElementById("username");
+  const password = document.getElementById("password");
 
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('loginForm');
-    const username = document.getElementById('username');
-    const password = document.getElementById('password');
-    const usernameError = document.getElementById('username-error');
-    const passwordError = document.getElementById('password-error');
+  // MATCHED HTML: These IDs must exist in the HTML now
+  const usernameError = document.getElementById("username-error");
+  const passwordError = document.getElementById("password-error");
 
-    function validateUsername() {
-        const value = username.value.trim();
-        
-        if (value === '') {
-            showError(username, usernameError, 'Please fill out this field');
-            return false;
-        } else {
-            showSuccess(username, usernameError);
-            return true;
-        }
+  function validateUsername() {
+    const value = username.value.trim();
+
+    if (value === "") {
+      showError(username, usernameError, "Please fill out this field");
+      return false;
+    } else {
+      showSuccess(username, usernameError);
+      return true;
     }
+  }
 
-    function validatePassword() {
-        const value = password.value.trim();
-        
-        if (value === '') {
-            showError(password, passwordError, 'Please fill out this field');
-            return false;
-        } else {
-            showSuccess(password, passwordError);
-            return true;
-        }
+  function validatePassword() {
+    const value = password.value.trim();
+
+    if (value === "") {
+      showError(password, passwordError, "Please fill out this field");
+      return false;
+    } else {
+      showSuccess(password, passwordError);
+      return true;
     }
+  }
 
-    function showError(input, errorElement, message) {
-        input.classList.add('error-input');
-        input.classList.remove('success-input');
-        errorElement.textContent = message;
-        errorElement.style.opacity = '1';
+  function showError(input, errorElement, message) {
+    input.classList.add("error-input");
+    input.classList.remove("success-input");
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.opacity = "1";
     }
+  }
 
-    function showSuccess(input, errorElement) {
-        input.classList.remove('error-input');
-        input.classList.add('success-input');
-        errorElement.textContent = '';
-        errorElement.style.opacity = '0';
+  function showSuccess(input, errorElement) {
+    input.classList.remove("error-input");
+    input.classList.add("success-input");
+    if (errorElement) {
+      errorElement.textContent = "";
+      errorElement.style.opacity = "0";
     }
+  }
 
-    function clearValidation(input, errorElement) {
-        input.classList.remove('error-input', 'success-input');
-        errorElement.textContent = '';
-        errorElement.style.opacity = '0';
-    }
+  // Real-time validation
+  if (username) username.addEventListener("input", validateUsername);
+  if (password) password.addEventListener("input", validatePassword);
 
-    //real-time validation on input
-    username.addEventListener('input', validateUsername);
-    password.addEventListener('input', validatePassword);
+  // Form submission
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      // 1. Prevent default submission initially
+      e.preventDefault();
 
-    //form submission
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+      // 2. Run checks
+      const isUsernameValid = validateUsername();
+      const isPasswordValid = validatePassword();
 
-        const isUsernameValid = validateUsername();
-        const isPasswordValid = validatePassword();
-
-        if (isUsernameValid && isPasswordValid) {
-            form.submit();
-        }
+      // 3. If JS validates, submit the form to PHP
+      if (isUsernameValid && isPasswordValid) {
+        form.submit();
+      }
     });
+  }
 });

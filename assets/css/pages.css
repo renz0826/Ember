@@ -2,7 +2,7 @@
   font-family: var(--font-sans-roboto);
   display: flex;
   flex-direction: column;
-  background-color: var(--color-foreground);
+  background: var(--gradient-foreground);
   padding: 20px;
   border-radius: 18px;
   gap: 18px;
@@ -15,6 +15,7 @@
 }
 
 .input_group {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -26,7 +27,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+.read_img {
   font-family: var(--font-sans-roboto);
   padding: 11px;
   background-color: var(--color-bg);
@@ -35,6 +37,17 @@ textarea {
   color: var(--color-white);
   font-size: var(--fs-h5);
   resize: none;
+  height: 100%;
+  width: 100%;
+}
+
+.read_desc {
+  font-family: var(--font-sans-roboto);
+  padding: 11px;
+  color: var(--color-white);
+  font-size: var(--fs-h5);
+  resize: none;
+  width: 100%;
 }
 
 #moment_media {
@@ -47,10 +60,12 @@ textarea {
 }
 
 #file_status {
-  margin-top: -25%;
-  margin-left: 43%;
-  display: flex;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  top: 40%;
   text-align: center;
+  margin-left: -12px;
 }
 
 .media_preview {
@@ -59,20 +74,70 @@ textarea {
   border: 1px solid var(--color-gray);
   border-radius: 10px;
   min-height: 324px;
+  position: relative;
 }
 
-.preview-container {
-  width: 200px;
-  height: 200px;
+/* 1. The Container */
+.img_container {
+  width: 600px;
+  height: 600px;
   overflow: hidden;
   border-radius: 8px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img_container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
 }
 
 .edit_bottom {
-  width: 80%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 3fr;
+  gap: 16px;
+  grid-auto-flow: row;
+  margin: 0 auto;
+  width: 1200px;
+  align-self: center;
+  padding: 50px 100px;
+}
+
+.edit_bottom_right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-self: center;
+}
+
+.read_header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 24px;
-  margin: 4% auto;
+}
+
+.read_img {
+  background-color: var(--color-foreground);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.read_img img {
+  display: block;
+  border-radius: 12px;
+}
+
+.read_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 0 auto;
+  display: block;
 }

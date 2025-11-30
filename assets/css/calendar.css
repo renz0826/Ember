@@ -1,7 +1,7 @@
 #calendar {
   display: block;
-  width: 100%;
-  background-color: var(--color-foreground);
+  width: 500px;
+  background: var(--gradient-foreground);
   border-radius: 18px;
   padding: 18px 21px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -12,7 +12,7 @@
   grid-template-columns: 3fr 1fr;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
@@ -50,7 +50,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   padding: 12px;
-  gap: 28px;
+  gap: 6px;
   text-align: center;
   align-items: center;
 }
@@ -65,33 +65,33 @@
 }
 
 .calendar_grid p {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    cursor: default; 
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: default;
 }
 
 .calendar_grid.interactive p {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .calendar_grid.interactive p:hover:not(.today):not(.selected) {
-    background-color: rgba(255, 255, 255, 0.1); 
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .today {
-    background-color: var(--color-selected-bg);
-    color: var(--color-white);
-    font-weight: bold;
+  background-color: var(--color-selected-bg);
+  color: var(--color-white);
+  font-weight: bold;
 }
 
 .selected {
-    background-color: #169DD9;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(49, 54, 207, 0.4);
+  background-color: #169dd9;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(49, 54, 207, 0.4);
 }

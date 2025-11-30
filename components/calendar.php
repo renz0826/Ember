@@ -6,7 +6,7 @@ function renderCalendar($initialDate = '')
     $valAttr = $initialDate ? "value='" . htmlspecialchars($initialDate, ENT_QUOTES) . "'" : "";
 
     echo <<<HTML
-<div id="calendar" data-title="Edit Your Moment">
+<div id="calendar">
     <h2 id="setDate"></h2>
 
     <input type="hidden" id="startDate" name="startDate">

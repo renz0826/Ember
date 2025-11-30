@@ -82,11 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <div class="left">
+        <?php require_once __DIR__ . '/../components/nav.php';?>
+    </div>
     <main>
-        <div class="left">
-            <?php require_once __DIR__ . '/../components/nav.php';?>
-        </div>
-
         <div class="right">
             <div class="top">
                 <?php require_once __DIR__ . '/../components/header.php'; ?>
@@ -108,12 +107,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="input_group">
-                        <label for="moment_desription"> Frame the Feeling </label>
+                        <label for="moment_description"> Frame the Feeling </label>
                         <input type="file" id="moment_media" name="moment_media" accept="image/*"
                             style="display: none;">
 
                         <div class="media_preview">
-                            <canvas id="canvas" width="300px" height="300px" style="border-radius: 10px;"></canvas>
+                            <div class="canvas_container">
+                                <canvas id="canvas"></canvas>
+                            </div>
                             <span id="file_status" style="display: block; margin-top: 10px; color: #888;">No file
                                 chosen.</span>
                         </div>
@@ -126,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <textarea id="moment_description" name="moment_description" placeholder="Tell the story..."
                             required></textarea>
                     </div>
+
                 </div>
 
                 <div class="bottom_right">
@@ -138,6 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </form>
         </div>
+
     </main>
 </body>
 
