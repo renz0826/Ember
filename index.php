@@ -50,6 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+    <!-- container for loading screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <img src="assets/images/logo-main.png" alt="" class= "loader-logo">
+            <div class="spinner"></div>
+            <p class="loading-text">Logging in...</p>
+        </div>
+    </div>
+    
+    <!-- container for login input fields -->
     <div class="background-container">
         <div class="login">
             <img src="assets/images/logo-typo.png" alt="Ember Logo" class="logo">
@@ -84,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script src="assets/js/validatelogin.js"></script>
+    <script src="assets/js/loadingscreen.js"></script>
 </body>
 
 </html>
