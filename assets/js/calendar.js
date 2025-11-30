@@ -98,15 +98,12 @@ function convertToISO(dateString, timeString) {
   return `${year}-${month}-${day}T${timeString}:00`;
 }
 
-
 async function createCalendarEvent() {
   const capsuleName = document.getElementById("moment_title").value;
 
   const now = new Date();
-  const startDate = now.toLocaleDateString("en-GB"); 
-  const startTime = now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
   const endDate = document.getElementById("endDate").value;
-  
+
   if (!endDate) {
     alert("Please fill in all date/time fields.");
     // Return a rejected Promise so upstream `await` can catch it
@@ -116,11 +113,11 @@ async function createCalendarEvent() {
   const event = {
     summary: capsuleName,
     start: {
-      dateTime: convertToISO(startDate, startTime),
+      dateTime: `${endDate}T00:00:00+08:00`,
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
     end: {
-      dateTime: `${endDate}T00:00:00+08:00`, // already includes offset
+      dateTime: `${endDate}T23:59:00+08:00`, // already includes offset
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
   };
@@ -146,7 +143,7 @@ async function createCalendarEvent() {
 }
 
 async function submitMoment(event) {
-  event.preventDefault(); 
+  event.preventDefault();
 
   const btn = document.getElementById("seal_moment");
   if (btn) btn.disabled = true;
@@ -155,7 +152,6 @@ async function submitMoment(event) {
 
     // success -> now submit form to PHP
     document.getElementById("moment_form").submit();
-
   } catch (err) {
     console.error("Failed to create calendar event:", err);
     alert("Failed to create calendar event. Moment not submitted.");
@@ -313,65 +309,66 @@ function initCustomCalendar() {
       const clickedDay = parseInt(e.target.textContent);
 
       // Build the clicked date object
-    const clickedDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      clickedDay
-    );
-
-    // Build today's date at midnight
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // BLOCK if clicked date is earlier than today
-    if (clickedDate < today) {
-      console.warn("Past dates are not allowed.");
-      return; // STOP here (do not set endDate)
-    }
-
-    // Continue as normal (valid future or today)
-    selectedDateObj = clickedDate;
-
-    const year = selectedDateObj.getFullYear();
-    const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
-    const day = String(selectedDateObj.getDate()).padStart(2, "0");
-
-    const formattedDate = `${year}-${month}-${day}`;
-
-    // Set hidden input
-    const endDateInput = document.getElementById("endDate");
-    if (endDateInput) {
-      endDateInput.value = formattedDate;
-      console.log("Open date has been set to", formattedDate);
-    // Stop immediately if this is a Read-Only page
-    if (!isInteractive) return;
-
-    if (e.target.tagName === "P" && e.target.textContent !== "") {
-      const clickedDay = parseInt(e.target.textContent);
-
-      // Update the internal object
-      selectedDateObj = new Date(
+      const clickedDate = new Date(
         date.getFullYear(),
         date.getMonth(),
         clickedDay
       );
 
-      // --- UPDATE HIDDEN INPUT FOR DATABASE ---
+      // Build today's date at midnight
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // BLOCK if clicked date is earlier than today
+      if (clickedDate < today) {
+        console.warn("Past dates are not allowed.");
+        return; // STOP here (do not set endDate)
+      }
+
+      // Continue as normal (valid future or today)
+      selectedDateObj = clickedDate;
+
       const year = selectedDateObj.getFullYear();
       const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
       const day = String(selectedDateObj.getDate()).padStart(2, "0");
+
       const formattedDate = `${year}-${month}-${day}`;
 
+      // Set hidden input
+      const endDateInput = document.getElementById("endDate");
       if (endDateInput) {
         endDateInput.value = formattedDate;
+        console.log("Open date has been set to", formattedDate);
+        // Stop immediately if this is a Read-Only page
+        if (!isInteractive) return;
+
+        if (e.target.tagName === "P" && e.target.textContent !== "") {
+          const clickedDay = parseInt(e.target.textContent);
+
+          // Update the internal object
+          selectedDateObj = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            clickedDay
+          );
+
+          // --- UPDATE HIDDEN INPUT FOR DATABASE ---
+          const year = selectedDateObj.getFullYear();
+          const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
+          const day = String(selectedDateObj.getDate()).padStart(2, "0");
+          const formattedDate = `${year}-${month}-${day}`;
+
+          if (endDateInput) {
+            endDateInput.value = formattedDate;
+          }
+
+          // Re-render to show the new blue block
+          renderCalendar();
+        }
+
+        renderCalendar();
       }
-
-      // Re-render to show the new blue block
-      renderCalendar();
     }
-
-    renderCalendar();
-    }}
   });
 
   // --- 6. NAVIGATION LISTENERS ---
