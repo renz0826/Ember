@@ -1,57 +1,61 @@
 <?php
-// 1. Include Database Connection and Components
+
+// Include necessary dependencies
 require_once __DIR__ . '/../includes/head.php';
-require_once __DIR__ . '/../components/button.php';
-require_once __DIR__ . '/../components/calendar.php';
+require_once __DIR__ . '/../components/button.php';   // Provides renderReferenceButton and renderSortButton
+require_once __DIR__ . '/../components/calendar.php'; // Provides renderCalendar
 
-// 2. Handle Form Submission
-$message = ""; // To store success/error messages
+// Initialize message variable
+$message = ""; 
 
+// Hand POST REQUEST for form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // A. Sanitize Text Inputs
+
+    // Sanitize text & date inputs
     $title = htmlspecialchars($_POST['moment_title'] ?? '');
     $description = htmlspecialchars($_POST['moment_description'] ?? '');
     
-    $sealDate = date('Y-m-d');
-    $openDate = $_POST['endDate'] ?? date('');
+    $sealDate = date('Y-m-d'); 
+    $openDate = $_POST['endDate'] ?? date('Y-m-d'); 
 
-    // B. Handle Image Upload
-    $imagePath = ""; // Default if no image
+    $imagePath = ""; 
     
     if (isset($_FILES['moment_media']) && $_FILES['moment_media']['error'] === 0) {
-        $uploadDir = __DIR__ . '/../uploads/'; // Points to Ember/uploads/
-    
 
-        // Generate unique name to prevent overwriting
+        // Sets upload directory to "uploads" folder
+        $uploadDir = __DIR__ . '/../uploads/'; 
+        
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        // Sets uploaded image to have a unique name
         $fileExtension = pathinfo($_FILES['moment_media']['name'], PATHINFO_EXTENSION);
         $uniqueName = uniqid('moment_', true) . '.' . $fileExtension;
         $targetFile = $uploadDir . $uniqueName;
         
-        // Validate it is an image
+        // Handles image upload
         $check = getimagesize($_FILES['moment_media']['tmp_name']);
         if ($check !== false) {
             if (move_uploaded_file($_FILES['moment_media']['tmp_name'], $targetFile)) {
-                // Store this path in the DB (Relative path for the browser)
                 $imagePath = '/Ember/uploads/' . $uniqueName;
             } else {
-                $message = "Error uploading file.";
+                $message = "Error uploading file. Check directory permissions.";
             }
         } else {
-            $message = "File is not an image.";
+            $message = "File is not a valid image.";
         }
     }
 
-    // C. Insert into Database
+    // If no errors persist, this handles moment information insert to the database
     if (empty($message)) {
-        // Assuming your table is named 'capsules' or 'moments'
-        // Adjust column names to match your actual database: title, description, image_url, seal, open
         $sql = "INSERT INTO moments (title, description, image_url, seal, open) VALUES (?, ?, ?, ?, ?)";
         
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("sssss", $title, $description, $imagePath, $sealDate, $openDate);
             
+            // If successful, alert shows
             if ($stmt->execute()) {
-                // Success! Redirect to home or show success
                 echo "<script> 
                     alert(\"Your moment has been successfully sealed.\"); 
                     window.location.href = 'home.php?success=created';
@@ -62,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $stmt->close();
         } else {
-            $message = "Query Error: " . $conn->error;
+            $message = "Query Preparation Error: " . $conn->error;
         }
     }
 }
@@ -78,41 +82,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <div class="left">
-        <?php require_once __DIR__ . '/../components/nav.php';?>
-    </div>
-    <main>
-        <div class="right">
-            <div class="top">
-                <?php require_once __DIR__ . '/../components/header.php'; ?>
-            </div>
-
+    <section class="left" aria-label="Site Navigation">
+        <?php 
+            // Include main site navigation
+            require_once __DIR__ . '/../components/nav.php';
+        ?>
+    </section>
+    <main role="main">
+        <section class="right" aria-label="Moment Preservation Form">
+            
+            <section class="top">
+                <?php 
+                    // Include page header component
+                    require_once __DIR__ . '/../components/header.php'; 
+                ?>
+            </section>
             <?php if ($message): ?>
-            <div style="background: #ffdddd; padding: 10px; margin: 10px; border-radius: 5px; color: red;">
-                <?php echo $message; ?>
+            <div role="alert" style="background: #ffdddd; padding: 10px; margin: 10px; border-radius: 5px; color: red;">
+                <?php echo htmlspecialchars($message); ?>
             </div>
             <?php endif; ?>
 
+            <!-- Form that handles moment creation -->
             <form id="moment_form" class="bottom" action="" method="POST" enctype="multipart/form-data">
 
-                <div class="bottom_left">
+                <section class="bottom_left">
+                    
                     <div class="input_group">
                         <label for="moment_title"> Name this Moment </label>
-                        <input type="text" id="moment_title" name="moment_title" placeholder="Name this moment..."
-                            required>
+                        <input type="text" id="moment_title" name="moment_title" placeholder="Name this moment..." required>
                     </div>
 
                     <div class="input_group">
-                        <label for="moment_description"> Frame the Feeling </label>
-                        <input type="file" id="moment_media" name="moment_media" accept="image/*"
-                            style="display: none;">
+                        <label for="moment_media"> Frame the Feeling </label>
+                        <input 
+                            type="file" 
+                            id="moment_media" 
+                            name="moment_media" 
+                            accept="image/*"
+                            style="display: none;"
+                        >
 
                         <div class="media_preview">
                             <div class="canvas_container">
                                 <canvas id="canvas"></canvas>
                             </div>
-                            <span id="file_status" style="display: block; margin-top: 10px; color: #888;">No file
-                                chosen.</span>
+                            <span id="file_status" style="display: block; margin-top: 10px; color: #888;">No file chosen.</span>
                         </div>
 
                         <?php renderUploadButton('Add Media', '', 'button_no_fill', 'upload_media', '/Ember/assets/icons/icon-media.svg'); ?>
@@ -120,24 +135,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="input_group">
                         <label for="moment_description"> Tell the Story </label>
-                        <textarea id="moment_description" name="moment_description" placeholder="Tell the story..."
-                            required></textarea>
+                        <textarea id="moment_description" name="moment_description" placeholder="Tell the story..." required></textarea>
                     </div>
 
-                </div>
-
-                <div class="bottom_right">
+                </section>
+                <section class="bottom_right">
+                    
                     <?php renderCalendar(); ?>
 
-                    <?php renderSubmitButton('Seal Moment', 'submitMoment(event)', 'button', 'seal_moment', '/Ember/assets/icons/icon-lock.svg', 'button'); ?>
+                    <?php 
+                        renderSubmitButton(
+                            'Seal Moment', 
+                            'submitMoment(event)', 
+                            'button', 
+                            'seal_moment', 
+                            '/Ember/assets/icons/icon-lock.svg', 
+                            'button'
+                        ); 
+                    ?>
 
                     <?php renderReferenceButton('Cancel', 'javascript:history.back()', 'button_no_fill', 'cancel', '/Ember/assets/icons/icon-cancel.svg'); ?>
-                </div>
-
-            </form>
-        </div>
-
-    </main>
+                
+                </section>
+                </form>
+            </section>
+        </main>
 </body>
 
 </html>
