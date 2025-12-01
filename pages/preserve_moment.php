@@ -2,7 +2,7 @@
 
 // Include necessary dependencies
 require_once __DIR__ . '/../includes/head.php';
-require_once __DIR__ . '/../components/button.php';   // Provides renderReferenceButton and renderSortButton
+require_once __DIR__ . '/../components/button.php';  // Provides button render functions
 require_once __DIR__ . '/../components/calendar.php'; // Provides renderCalendar
 
 // Initialize message variable
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             require_once __DIR__ . '/../components/nav.php';
         ?>
     </section>
-    <main role="main">
+    <main>
         <section class="right" aria-label="Moment Preservation Form">
             
             <section class="top">

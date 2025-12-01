@@ -2,7 +2,7 @@
 
 // Include necessary dependencies
 require_once __DIR__ . '/../includes/head.php';
-require_once __DIR__ . '/../components/button.php';   // Provides renderReferenceButton and renderSortButton
+require_once __DIR__ . '/../components/button.php';   // Provides button render functions
 require_once __DIR__ . '/../components/calendar.php'; // Provides renderCalendar
 require_once __DIR__ . '/../components/moment.php';   // Provides renderAllMoments and renderRecentlySealed
 

@@ -15,7 +15,7 @@ require_once __DIR__ . '/../components/moment.php'; // Provides renderRecentlySe
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Home - Ember </title>
-    </head>
+</head>
 
 <body>
     <section class="left">
