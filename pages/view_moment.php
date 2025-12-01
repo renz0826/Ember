@@ -86,7 +86,7 @@ require_once __DIR__ . '/../components/moment.php';
 
                 <div class="bottom_right">
                     <?php renderCalendar($row['seal']); ?>
-                    <?php renderLinkButton('Preserve More Moments', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    <?php renderReferenceButton('Preserve More Moments', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
                 </div>
 
             </div>

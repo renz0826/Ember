@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <?php renderSubmitButton('Seal Moment', 'submitMoment(event)', 'button', 'seal_moment', '/Ember/assets/icons/icon-lock.svg', 'button'); ?>
 
-                    <?php renderLinkButton('Cancel', 'home.php', 'button_no_fill', 'cancel', '/Ember/assets/icons/icon-cancel.svg'); ?>
+                    <?php renderReferenceButton('Cancel', 'javascript:history.back()', 'button_no_fill', 'cancel', '/Ember/assets/icons/icon-cancel.svg'); ?>
                 </div>
 
             </form>

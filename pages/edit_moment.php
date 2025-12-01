@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="edit_bottom_right">
                     <?php renderSubmitButton('Update Seal Time', '', 'button', 'update', '/Ember/assets/icons/icon-lock.svg'); ?>
 
-                    <?php renderLinkButton('Cancel', 'home.php', 'button_no_fill', '', '/Ember/assets/icons/icon-cancel.svg'); ?>
+                    <?php renderReferenceButton('Cancel', 'javascript:history.back()', 'button_no_fill', '', '/Ember/assets/icons/icon-cancel.svg'); ?>
                 </div>
 
             </form>

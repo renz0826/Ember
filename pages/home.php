@@ -40,7 +40,7 @@ require_once __DIR__ . '/../components/moment.php';
                 </div>
                 <div class="bottom_right">
                     <?php renderCalendar(); ?>
-                    <?php renderLinkButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    <?php renderReferenceButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
                     <?php renderRecentlySealed($conn); ?>
                 </div>
 
