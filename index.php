@@ -90,8 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <script src="assets/js/validatelogin.js"></script>
-    <script src="assets/js/loadingscreen.js"></script>
+    <script src="assets/js/login.js"></script>
 </body>
 
 </html>

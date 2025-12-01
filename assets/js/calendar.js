@@ -1,28 +1,27 @@
-// ==========================================
-// PART 1: GOOGLE API CONFIGURATION
-// ==========================================
-const CLIENT_ID =
-  "409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
+/* ==========================================
+        PART 1: GOOGLE API CONFIGURATION
+   ========================================== */
+
+const CLIENT_ID ="409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
 const API_KEY = "AIzaSyDT-iOvQSyMCMswPI94LQBPg8Afibdje28";
-const DISCOVERY_DOC =
-  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
+const DISCOVERY_DOC ="https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
 
-// ==========================================
-// PART 2: INITIALIZATION LOGIC
-// ==========================================
+/* ==========================================
+         PART 2: INITIALIZATION LOGIC
+   ========================================== */
 
-// Triggered when window finishes loading
+// Triggers when window finishes loading
 window.onload = function () {
   // 1. Init Custom Calendar
   initCustomCalendar();
 
   // 2. Init Google Libraries
-  // We use try-catch to prevent crashing if scripts failed to load
+  // Try-catches prevent crashing if scripts failed to load
   try {
     gapi.load("client", initializeGapiClient);
     tokenClient = google.accounts.oauth2.initTokenClient({
@@ -49,9 +48,9 @@ async function initializeGapiClient() {
   console.log("GAPI Client Loaded");
 }
 
-// ==========================================
-// PART 3: AUTHENTICATION & EVENT CREATION
-// ==========================================
+/* ==========================================
+    PART 3: AUTHENTICATION & EVENT CREATION
+   ========================================== */
 
 async function handleAuthClick() {
   if (!gapiInited || !gisInited) {
@@ -63,13 +62,13 @@ async function handleAuthClick() {
     // Setup callback that will run when requestAccessToken completes
     tokenClient.callback = async (resp) => {
       if (resp.error) {
-        // user denied consent or an error occurred
+        // User denied consent or error occurred
         console.error("TokenClient callback error:", resp);
         return reject(resp);
       }
 
       try {
-        const res = await createCalendarEvent(); // createCalendarEvent must return a promise
+        const res = await createCalendarEvent(); 
         resolve(res);
       } catch (err) {
         reject(err);
@@ -86,14 +85,14 @@ async function handleAuthClick() {
         reject(err);
       }
     } else {
-      // token already exists — call createCalendarEvent directly and resolve/reject accordingly
+      // Else token already exists, call createCalendarEvent directly and resolve/reject accordingly
       createCalendarEvent().then(resolve).catch(reject);
     }
   });
 }
 
 function convertToISO(dateString, timeString) {
-  // dateString = "DD/MM/YYYY"
+  // dateString = "DD/MM/YYYY" format
   const [day, month, year] = dateString.split("/");
   return `${year}-${month}-${day}T${timeString}:00`;
 }
@@ -106,7 +105,7 @@ async function createCalendarEvent() {
 
   if (!endDate) {
     alert("Please fill in all date/time fields.");
-    // Return a rejected Promise so upstream `await` can catch it
+    // Returns a rejected promise so upstream `await` can catch it
     return Promise.reject(new Error("Missing fields"));
   }
 
@@ -117,7 +116,7 @@ async function createCalendarEvent() {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
     end: {
-      dateTime: `${endDate}T23:59:00+08:00`, // already includes offset
+      dateTime: `${endDate}T23:59:00+08:00`,
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
   };
@@ -130,7 +129,7 @@ async function createCalendarEvent() {
 
     console.log("Success!", response);
     alert("Event created successfully!");
-    // open link in new tab
+    // Open link in new tab
     if (response && response.result && response.result.htmlLink) {
       window.open(response.result.htmlLink, "_blank");
     }
@@ -138,7 +137,7 @@ async function createCalendarEvent() {
   } catch (err) {
     console.error("Error creating event:", err);
     alert("Failed to create event. Check console for details.");
-    throw err; // for debug
+    throw err; // Debug message
   }
 }
 
@@ -150,7 +149,7 @@ async function submitMoment(event) {
   try {
     await handleAuthClick();
 
-    // success -> now submit form to PHP
+    // If successful, submit form to PHP
     document.getElementById("moment_form").submit();
   } catch (err) {
     console.error("Failed to create calendar event:", err);
@@ -160,26 +159,21 @@ async function submitMoment(event) {
   }
 }
 
-// override even if PHP output stays the same
+// Override even if PHP output remains the same
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("seal_moment");
   if (!btn) return;
-  // remove inline onclick (optional)
   btn.onclick = null;
 
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
-    await submitMoment(e); // uses the same function above
+    await submitMoment(e);
   });
 });
 
-// ==========================================
-// PART 4: CUSTOM CALENDAR UI LOGIC
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", () => {
-  initCustomCalendar();
-});
+/* ==========================================
+       PART 4: CUSTOM CALENDAR UI LOGIC
+   ========================================== */
 
 function initCustomCalendar() {
   const monthYear = document.getElementById("month_year");
@@ -195,114 +189,50 @@ function initCustomCalendar() {
   let date = new Date();
   let selectedDateObj = null;
 
-  // --- 1. SETUP & PERMISSIONS ---
   const container = document.getElementById("calendar");
   if (!container) return; // Stop if no calendar on page
 
-  // Get page title to determine behavior
-  // Fix: Added .trim() to remove accidental whitespace from PHP output
-  const rawTitle =
-    container.dataset.title || document.documentElement.dataset.title || "";
-  const titleFromPHP = rawTitle.trim();
+  const titleFromPHP = (container.dataset.title || document.documentElement.dataset.title || "").trim();
 
-  // Define pages where the user can CLICK to change the date
   const interactivePages = ["Preserve a Moment", "Edit Your Moment"];
   const isInteractive = interactivePages.includes(titleFromPHP);
+  if (isInteractive) grid.classList.add("interactive");
 
-  // Add class for CSS styling (cursor pointer, hover effects)
-  if (isInteractive) {
-    grid.classList.add("interactive");
-  }
-
-  // --- 2. PRE-LOAD DATE (Fix for Edit/View Pages) ---
-  if (endDateInput && endDateInput.value) {
-    const parts = endDateInput.value.split("-");
-    if (parts.length === 3) {
-      // Create date (Note: Month is 0-indexed in JS)
-      selectedDateObj = new Date(parts[0], parts[1] - 1, parts[2]);
-      // Move the calendar view to the month of the selected date
+  if (endDateInput?.value) {
+    const [y, m, d] = endDateInput.value.split("-");
+    if (y && m && d) {
+      selectedDateObj = new Date(y, m - 1, d);
       date = new Date(selectedDateObj);
     }
   }
 
-  // --- 3. HEADER TEXT LOGIC ---
-  function renderCalendarUse(title) {
-    const setDate = document.getElementById("setDate");
-    if (!setDate) return; // Safety check
-
-    // Fix: Use the array check instead of hardcoded strings
-    if (interactivePages.includes(title)) {
-      setDate.innerHTML = `
-        <h3 style="margin-bottom: 20px">Seal Until...</h3>
-        <hr>
-        `;
-    } else {
-      // Default or View Page
-      setDate.innerHTML = "";
-    }
+  const setDate = document.getElementById("setDate");
+  if (setDate && interactivePages.includes(titleFromPHP)) {
+    setDate.innerHTML = `<h3 style="margin-bottom: 20px">Seal Until...</h3><hr>`;
   }
 
-  renderCalendarUse(titleFromPHP);
-
-  // --- 4. RENDER FUNCTION ---
   function renderCalendar() {
     grid.innerHTML = "";
+    week.innerHTML = days.map(d => `<p>${d}</p>`).join("");
 
-    // Render Weekdays
-    let html = "";
-    for (const day of days) {
-      html += `<p>${day}</p>`;
-    }
-    week.innerHTML = html;
-
-    // Update Month/Year Text
     const year = date.getFullYear();
     const month = date.getMonth();
-
-    monthYear.textContent = date.toLocaleString("default", {
-      month: "long",
-      year: "numeric",
-    });
-
-    // Calculate Days
+    monthYear.textContent = date.toLocaleString("default", { month: "long", year: "numeric" });
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+    grid.innerHTML = "<div></div>".repeat(firstDay);
 
-    // Empty slots for previous month
-    for (let i = 0; i < firstDay; i++) {
-      grid.innerHTML += `<div></div>`;
-    }
-
-    // Days of the month
+    const today = new Date();
     for (let day = 1; day <= daysInMonth; day++) {
-      const today = new Date();
-
-      // Check for "Today"
-      const isToday =
-        day === today.getDate() &&
-        month === today.getMonth() &&
-        year === today.getFullYear();
-
-      // Check for "Selected"
-      let isSelected = false;
-      if (selectedDateObj) {
-        isSelected =
-          day === selectedDateObj.getDate() &&
-          month === selectedDateObj.getMonth() &&
-          year === selectedDateObj.getFullYear();
-      }
-
-      let className = "";
-      if (isToday) className += "today ";
-      if (isSelected) className += "selected";
-
-      grid.innerHTML += `<p class="${className.trim()}">${day}</p>`;
+      const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+      const isSelected = selectedDateObj?.getDate() === day && selectedDateObj?.getMonth() === month && selectedDateObj?.getFullYear() === year;
+      const cls = [isToday && "today", isSelected && "selected"].filter(Boolean).join(" ");
+      grid.innerHTML += `<p class="${cls}">${day}</p>`;
     }
   }
 
-  // --- 5. CLICK LISTENER (Gated by Interactivity) ---
   grid.addEventListener("click", (e) => {
-    // Stop immediately if this is a Read-Only page
+    // Stop immediately if it is a read-only page
     if (!isInteractive) return;
 
     if (e.target.tagName === "P" && e.target.textContent !== "") {
@@ -319,10 +249,10 @@ function initCustomCalendar() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      // BLOCK if clicked date is earlier than today
+      // Block if clicked date is earlier than today
       if (clickedDate < today) {
         console.warn("Past dates are not allowed.");
-        return; // STOP here (do not set endDate)
+        return;
       }
 
       // Continue as normal (valid future or today)
@@ -339,7 +269,7 @@ function initCustomCalendar() {
       if (endDateInput) {
         endDateInput.value = formattedDate;
         console.log("Open date has been set to", formattedDate);
-        // Stop immediately if this is a Read-Only page
+        // Stop immediately if this is a read-only page
         if (!isInteractive) return;
 
         if (e.target.tagName === "P" && e.target.textContent !== "") {
@@ -352,7 +282,6 @@ function initCustomCalendar() {
             clickedDay
           );
 
-          // --- UPDATE HIDDEN INPUT FOR DATABASE ---
           const year = selectedDateObj.getFullYear();
           const month = String(selectedDateObj.getMonth() + 1).padStart(2, "0");
           const day = String(selectedDateObj.getDate()).padStart(2, "0");
@@ -371,7 +300,6 @@ function initCustomCalendar() {
     }
   });
 
-  // --- 6. NAVIGATION LISTENERS ---
   prevBtn.addEventListener("click", () => {
     date.setMonth(date.getMonth() - 1);
     renderCalendar();
