@@ -1,6 +1,8 @@
 <?php
 
+// Sets default timezone to Asia/Manila
 date_default_timezone_set('Asia/Manila');
+
 // Database connection parameters
 $host = 'localhost';
 $db   = 'ember_db';

@@ -1,8 +1,9 @@
 <?php
 
-// database connection
+// Database connection
 require_once __DIR__ . '/../includes/db_connect.php';
 
+// Renders <header> tag for necessary external files
 echo <<<HTML
 <head>
   <meta charset="utf-8">
