@@ -1,8 +1,4 @@
-<?php
-require_once __DIR__ . '/../includes/head.php';
-
-?>
-
+<!-- Dynamic page header component -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +10,7 @@ require_once __DIR__ . '/../includes/head.php';
 <body>
     <header>
         <div>
+            <!-- Contains the dynamic header description -->
             <div id="pageHeader"></div>
         </div>
         <div id="profile-bar">
