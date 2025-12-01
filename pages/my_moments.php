@@ -1,16 +1,10 @@
 <?php
 
-// includes the head
+// Include necessary dependencies
 require_once __DIR__ . '/../includes/head.php';
-
-// includes components
-require_once __DIR__ .'/../components/button.php';
-require_once __DIR__ . '/../components/calendar.php';
-
-// include the moment component
-require_once __DIR__ . '/../components/moment.php';
-
-
+require_once __DIR__ . '/../components/button.php';   // Provides renderReferenceButton and renderSortButton
+require_once __DIR__ . '/../components/calendar.php'; // Provides renderCalendar
+require_once __DIR__ . '/../components/moment.php';   // Provides renderAllMoments and renderRecentlySealed
 
 ?>
 
@@ -24,37 +18,59 @@ require_once __DIR__ . '/../components/moment.php';
 </head>
 
 <body>
-    <div class="left">
-        <?php require_once __DIR__ . '/../components/nav.php'; ?>
-    </div>
+    <section class="left">
+        <?php 
+            // Include main site navigation component
+            require_once __DIR__ . '/../components/nav.php';
+        ?>
+    </section>
+    
     <main>
-        <div class="right">
-            <div class="top">
-                <?php require_once __DIR__ . '/../components/header.php';?>
-            </div>
-            <div class="bottom">
+        <section class="right">
+            
+            <section class="top">
+                <?php 
+                    // Include page header component
+                    require_once __DIR__ . '/../components/header.php'; 
+                ?>
+            </section>
+            
+            <section class="bottom">
 
-                <div class="bottom_left">
+                <section class="bottom_left">
                     <div class="moment_top">
                         <h3> Soon to Unseal</h3>
                         <div class="actions">
+
+                            <!-- Renders sort buttons -->
                             <?= renderSortButton('Sealed', 'javascript:void(0)', 'button_small', 'filter-sealed'); ?>
                             <?= renderSortButton('Unsealed', 'javascript:void(0)', 'button_no_fill_small', 'filter-unsealed'); ?>
                         </div>
                     </div>
+
+                    <!-- Connects to the database and render moment cards -->
                     <?= renderAllMoments($conn) ?>
-                </div>
+                </section>
 
-                <div class="bottom_right">
+                <section class="bottom_right">
                     <?php renderCalendar(); ?>
-                    <?php renderReferenceButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    
+                    <?php 
+                        renderReferenceButton(
+                            'Preserve a Moment', 
+                            'preserve_moment.php', 
+                            'button', 
+                            '', 
+                            '/Ember/assets/icons/icon-preserve-white.svg'
+                        ); 
+                    ?>
+                    
+                    <!-- Connects to the database and render recently sealed moment cards -->
                     <?php renderRecentlySealed($conn); ?>
-                </div>
+                </section>
 
-            </div>
-        </div>
-
-
+            </section>
+        </section>
     </main>
 </body>
 

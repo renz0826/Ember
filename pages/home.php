@@ -58,6 +58,7 @@ require_once __DIR__ . '/../components/moment.php'; // Provides renderRecentlySe
                         ); 
                     ?>
                     
+                    <!-- Connects to the database and render recently sealed moment cards -->
                     <?php renderRecentlySealed($conn); ?>
                 </section>
 
