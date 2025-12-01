@@ -1,162 +1,152 @@
+/* ==========================================
+                  MAIN SCRIPT 
+   ========================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
-  const headers = [
-    {
+  // Pre-define headers 
+  const HEADERS = new Map([
+    ["Home", {
       title: "Home",
-      description:
-        "A warm overview of your active capsules, upcoming unseals, and recent memories.",
-    },
-    {
+      description: "A warm overview of your active capsules, upcoming unseals, and recent memories."
+    }],
+    ["Preserve a Moment", {
       title: "Preserve a Moment",
-      description:
-        "Create a new capsule — write, upload, and set a future unseal date.",
-    },
-    {
+      description: "Create a new capsule — write, upload, and set a future unseal date."
+    }],
+    ["Edit Your Moment", {
       title: "Edit Your Moment",
-      description:
-        "Edit capsule content, change unlock date, or update attachments before sealing.",
-    },
-    {
+      description: "Edit capsule content, change unlock date, or update attachments before sealing."
+    }],
+    ["My Moments", {
       title: "My Moments",
-      description:
-        "Access your saved and sealed capsules — view, edit, or reopen.",
-    },
-  ];
+      description: "Access your saved and sealed capsules — view, edit, or reopen."
+    }],
+  ]);
+
+  /* ==========================================
+            HEADER RENDERING LOGIC
+   ========================================== */
 
   function renderHeaderInfo(title) {
-    const container = document.getElementById("pageHeader");
+    const pageHeaderContainer = document.getElementById("pageHeader");
+    const rootElement = document.documentElement; // For dataset access
 
-    // 1. Check static list first
-    const page = headers.find((c) => c.title === title);
+    if (!pageHeaderContainer) return;
+
+    // Checks static map first
+    const page = HEADERS.get(title);
 
     if (page) {
-      container.innerHTML = `
-      <h3>${page.title}</h3>
-      <p style="color: var(--color-gray)">${page.description}</p>
-    `;
+      pageHeaderContainer.innerHTML = `
+        <h3>${page.title}</h3>
+        <p style="color: var(--color-gray)">${page.description}</p>
+      `;
     }
-    // 2. IF NOT IN STATIC LIST: Check for overrides from PHP (Data Attributes)
+    // If not static, check for dynamic overrides from PHP
     else {
-      const dynamicTitle = document.documentElement.dataset.title;
-      const dynamicDesc = document.documentElement.dataset.description;
+      const { title: dynamicTitle, description: dynamicDesc = "" } = rootElement.dataset;
 
       if (dynamicTitle) {
-        container.innerHTML = `
-                <h2>${dynamicTitle}</h2>
-                <small style="color: var(--color-gray)">${
-                  dynamicDesc || ""
-                }</small>
-            `;
-      } else if (container) {
-        container.innerHTML = `<p>Info not found</p>`;
+        pageHeaderContainer.innerHTML = `
+          <h2>${dynamicTitle}</h2>
+          <small style="color: var(--color-gray)">${dynamicDesc}</small>
+        `;
+      } else {
+        pageHeaderContainer.innerHTML = `<p>Info not found</p>`;
       }
     }
   }
 
-  // Check if pageHeader exists before running
-  if (document.getElementById("pageHeader")) {
-    const titleFromPHP = document.documentElement.dataset.title;
-    renderHeaderInfo(titleFromPHP);
+  // Initial call for header
+  if (pageHeaderContainer) {
+    renderHeaderInfo(rootElement.dataset.title);
   }
-});
 
-/// --- FILE UPLOAD LOGIC ---
-const fileInput = document.getElementById("moment_media");
-const customButton = document.getElementById("upload_media");
-const fileStatus = document.getElementById("file_status");
-const canvas = document.getElementById("canvas");
+  /* ==========================================
+                  FILE UPLOAD LOGIC
+     ========================================== */
 
-if (customButton && fileInput) {
-  // Open file dialog when custom button is clicked
-  customButton.addEventListener("click", () => fileInput.click());
+  const fileInput = document.getElementById("moment_media");
+  const customButton = document.getElementById("upload_media");
+  const fileStatus = document.getElementById("file_status");
+  const canvas = document.getElementById("canvas");
 
-  // Handle file selection (Merged logic)
-  fileInput.addEventListener("change", () => {
-    // 1. Update Status Text
-    if (fileInput.files.length > 0) {
-      if (fileStatus) fileStatus.textContent = ""; // Clear "No file chosen" text
-    } else {
-      if (fileStatus) fileStatus.textContent = "No file chosen";
-      // Optional: Clear canvas if no file is chosen
+  if (customButton && fileInput) {
+    // Open file dialog when custom button is clicked
+    customButton.addEventListener("click", () => fileInput.click());
+
+    // Handles file selection
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      const hasFile = fileInput.files.length > 0;
+
+      // Update status text and clear canvas if needed
+      if (fileStatus) {
+        fileStatus.textContent = hasFile ? "" : "No file chosen";
+      }
+
       if (canvas) {
         const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-      return; // Stop processing if no file
-    }
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Always clear on change
 
-    // 2. Draw Image to Canvas
-    if (canvas && fileInput.files[0]) {
-      const file = fileInput.files[0];
-      const ctx = canvas.getContext("2d");
+        if (hasFile && file.type.startsWith("image/")) {
+          // Draw Image to Canvas
+          const reader = new FileReader();
 
-      // Ensure the selected file is an image
-      if (file.type.startsWith("image/")) {
-        const reader = new FileReader();
+          reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+              // Center crop logic
+              const size = Math.min(img.width, img.height);
+              const sx = (img.width - size) / 2;
+              const sy = (img.height - size) / 2;
 
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            // Calculate aspect ratio for center crop (Square)
-            const size = Math.min(img.width, img.height);
-            const sx = (img.width - size) / 2;
-            const sy = (img.height - size) / 2;
-
-            // Clear and Draw
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(
-              img,
-              sx,
-              sy,
-              size,
-              size,
-              0,
-              0,
-              canvas.width,
-              canvas.height
-            );
+              ctx.drawImage(
+                img, sx, sy, size, size, // Source (center crop)
+                0, 0, canvas.width, canvas.height // Destination (full canvas)
+              );
+            };
+            img.src = e.target.result;
           };
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+          reader.readAsDataURL(file);
+        }
       }
-    }
-  });
-}
+    });
+  }
 
-// --- FILTER LOGIC (Sealed/Unsealed) ---
-document.addEventListener("DOMContentLoaded", () => {
+  /* ==========================================
+            FILTER LOGIC (SEAL/UNSEAL)
+     ========================================== */
+
   const btnSealed = document.getElementById("filter-sealed");
   const btnUnsealed = document.getElementById("filter-unsealed");
   const allMoments = document.querySelectorAll(".moment_container");
 
   if (btnSealed && btnUnsealed) {
-    function setActiveButton(activeBtn, inactiveBtn) {
-      activeBtn.classList.remove("button_no_fill_small");
-      activeBtn.classList.add("button_small");
+    const activeClass = "button_small";
+    const inactiveClass = "button_no_fill_small";
 
-      inactiveBtn.classList.remove("button_small");
-      inactiveBtn.classList.add("button_no_fill_small");
+    function setActiveButton(activeBtn, inactiveBtn) {
+      activeBtn.classList.remove(inactiveClass);
+      activeBtn.classList.add(activeClass);
+
+      inactiveBtn.classList.remove(activeClass);
+      inactiveBtn.classList.add(inactiveClass);
     }
 
     function filterMoments(status) {
+      const isSealed = status === "sealed";
+      
       allMoments.forEach((moment) => {
-        // 1. Show/Hide the Moment Card based on status
-        if (moment.dataset.status === status) {
-          moment.style.display = "block";
+        // Use a single line to determine display style
+        const display = moment.dataset.status === status ? "block" : "none";
+        moment.style.display = display;
 
-          // 2. LOGIC TO HIDE EDIT BUTTON
-          // We look for the 'a' tag with class 'action' inside THIS moment
-          const editBtn = moment.querySelector("a.action");
-
-          if (editBtn) {
-            if (status === "unsealed") {
-              editBtn.style.display = "none";
-            } else {
-              editBtn.style.display = "";
-            }
-          }
-        } else {
-          moment.style.display = "none";
+        // Logic to show/hide the edit button
+        const editBtn = moment.querySelector("a.action");
+        if (editBtn) {
+          // Edit button is only visible for 'sealed' moments that are currently being shown
+          editBtn.style.display = (isSealed && display === "block") ? "" : "none";
         }
       });
     }
@@ -171,41 +161,46 @@ document.addEventListener("DOMContentLoaded", () => {
       filterMoments("unsealed");
     });
 
-    // Initial Load Check
-    if (btnSealed.classList.contains("button_small")) {
-      filterMoments("sealed");
-    } else {
-      filterMoments("unsealed");
+    // Initial load: Check the class of btnSealed to set the initial filter state
+    // Run filterMoments only if allMoments exist to prevent errors
+    if (allMoments.length > 0) {
+      if (btnSealed.classList.contains(activeClass)) {
+        filterMoments("sealed");
+      } else {
+        filterMoments("unsealed");
+      }
     }
   }
-});
 
-// --- POPUP LOGIC (Corrected for Classes) ---
-document.addEventListener("DOMContentLoaded", function () {
-  // Select ALL buttons that have a moment ID attached
-  const openButtons = document.querySelectorAll(".action[data-moment-id]"); // Updated selector
+  /* ==========================================
+               POPUP/MODAL LOGIC
+     ========================================== */
 
-  openButtons.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
+
+  // Uses event delegation for better performance and future-proofing
+  document.body.addEventListener("click", (e) => {
+    // Check for Open Button
+    const openButton = e.target.closest(".action[data-moment-id]");
+    if (openButton) {
       e.preventDefault();
-
-      const momentId = this.dataset.momentId;
+      const momentId = openButton.dataset.momentId;
       const popUp = document.getElementById(`modal-${momentId}`);
-
       if (popUp) {
         popUp.style.display = "flex";
       }
-    });
-  });
+      return; // Handled click, exit
+    }
 
-  const cancelButtons = document.querySelectorAll(".close-modal-btn"); // Updated class selector
-  cancelButtons.forEach((btn) => {
-    btn.addEventListener("click", function (e) {
+    // Check for close button
+    const closeButton = e.target.closest(".close-modal-btn");
+    if (closeButton) {
       e.preventDefault();
-      const modal = this.closest(".delete-modal");
+      // Find the closest parent with the modal class
+      const modal = closeButton.closest(".delete-modal"); 
       if (modal) {
         modal.style.display = "none";
       }
-    });
+    }
   });
+
 });
