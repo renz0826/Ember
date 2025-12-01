@@ -1,60 +1,70 @@
 <?php
-// 1. Include DB Connect (Crucial for $conn access)
-// Assuming this file includes your db_connect.php:
+
+// Include necessary dependencies
 require_once __DIR__ . '/../includes/head.php';
-require_once __DIR__ . '/../includes/db_connect.php';
-require_once __DIR__ . '/../components/button.php';
-require_once __DIR__ . '/../components/calendar.php'; // Includes renderCalendar
+require_once __DIR__ . '/../includes/db_connect.php'; // Provides database connection
+require_once __DIR__ . '/../components/button.php'; // Provides button render functions
+require_once __DIR__ . '/../components/calendar.php'; // Provides renderCalendar
 
-// Initialize default moment data to prevent "undefined variable" errors during initial load
+// Initialize default moment data to prevent "undefined variable" errors 
 $row = ['id' => '', 'open' => ''];
+$message = ''; // Message for displaying errors or status
 
-// --- HANDLE GET REQUEST (Fetch Data for pre-filling the form) ---
+// Handle GET REQUEST for filling up the form
 if (isset($_GET['id'])) {
-    $id_edit = (int) $_GET['id'];
+    $id_edit = (int) $_GET['id']; // Securely cast ID to integer
 
+    // Handle cases where the ID is 0 or negative
     if ($id_edit <= 0) {
-        exit("Invalid Moment ID");
+        exit("Invalid Moment ID provided.");
     }
 
-    // Fix: Corrected SQL syntax (removed trailing comma)
+    // Use prepared statement to securely fetch the current moment's data
     $stmt = $conn->prepare("SELECT id, open FROM moments WHERE id = ?");
+    
     $stmt->bind_param('i', $id_edit);
 
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc(); // Fetches the data into $row
+            $row = $result->fetch_assoc();
         } else {
             exit("Moment not found.");
         }
     } else {
-        echo "Error: " . $stmt->error;
+        $message = "Database Fetch Error: " . $stmt->error;
     }
     $stmt->close();
 }
 
-// --- HANDLE POST REQUEST (Update Data) ---
+// Handle POST REQUEST to process form submission and update date
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1. Get ID from hidden input
-    $id = $_POST['id'];
-    
-    // 2. Fix: Use 'endDate' to match the calendar input name
-    // If the input is empty (shouldn't happen), default to today.
-    $openDate = $_POST['endDate'] ?? date('Y-m-d');
 
+    $id = (int) ($_POST['id'] ?? 0); 
+    
+    // Use 'endDate' to match the calendar input name; sanitize the date input
+    $openDate = filter_input(INPUT_POST, 'endDate', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+    // Fallback if the input is empty or invalid
+    if (empty($openDate)) {
+        $openDate = date('Y-m-d');
+    }
+
+    // Prepared statement for secure UPDATE operation
     $stmt = $conn->prepare("UPDATE moments SET open = ? WHERE id = ?");
+    
+    // 's' for string (date), 'i' for integer (ID)
     $stmt->bind_param('si', $openDate, $id);
 
     if ($stmt->execute()) {
-        // Success: Use JS for alert before redirect
+        // Success: Use JavaScript to display alert and redirect
         echo "<script> 
                 alert(\"Your moment has been successfully updated.\"); 
                 window.location.href = 'home.php?success=updated';
               </script>";
         exit();
     } else {
-        $message = "Database Error: " . $stmt->error;
+        $message = "Database Update Error: " . $stmt->error;
     }
     $stmt->close();
 }
@@ -67,35 +77,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Edit Moment - Ember </title>
-</head>
+    </head>
 
 <body>
     <div class="left">
-        <?php require_once __DIR__ . '/../components/nav.php'; ?>
+        <?php 
+            // Include main site navigation component
+            require_once __DIR__ . '/../components/nav.php'; 
+        ?>
     </div>
+    
     <main>
-        <div class="right">
+        <section class="right">
             <div class="top">
-                <?php require_once __DIR__ . '/../components/header.php'; ?>
+                <?php 
+                    // Include page header component
+                    require_once __DIR__ . '/../components/header.php'; 
+                ?>
             </div>
+            
+            <?php if (!empty($message)): ?>
+                <div class="message-box error"><?= htmlspecialchars($message) ?></div>
+            <?php endif; ?>
+            
+            <!-- Form for editing openDate -->
             <form class="edit_bottom" action="" method="POST">
-
-                <input type="hidden" name="id"
-                    value="<?= htmlspecialchars($row['id']) ?>">
+                
+                <input 
+                    type="hidden" 
+                    name="id"
+                    value="<?= htmlspecialchars($row['id']) ?>"
+                >
+                
                 <div class="edit_bottom_left">
+                    <!-- Renders interactive calendar to set new openDate -->
                     <?php renderCalendar($row['open']); ?>
                 </div>
 
                 <div class="edit_bottom_right">
-                    <?php renderSubmitButton('Update Seal Time', '', 'button', 'update', '/Ember/assets/icons/icon-lock.svg'); ?>
+                    <!-- Submit Button -->
+                    <?php 
+                        renderSubmitButton(
+                            'Update Seal Time', 
+                            '', 
+                            'button', 
+                            'update', 
+                            '/Ember/assets/icons/icon-lock.svg'
+                        ); 
+                    ?>
 
-                    <?php renderReferenceButton('Cancel', 'javascript:history.back()', 'button_no_fill', '', '/Ember/assets/icons/icon-cancel.svg'); ?>
+                    <!-- Cancel Button -->
+                    <?php 
+                        renderReferenceButton(
+                            'Cancel', 
+                            'javascript:history.back()', 
+                            'button_no_fill', 
+                            '', 
+                            '/Ember/assets/icons/icon-cancel.svg'
+                        ); 
+                    ?>
                 </div>
 
             </form>
-        </div>
-
-
+        </section>
     </main>
 </body>
 
