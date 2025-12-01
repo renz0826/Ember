@@ -3,38 +3,41 @@
    ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Pre-define headers 
-  const HEADERS = new Map([
-    ["Home", {
+  // Pre-define headers
+  const HEADERS = [
+    {
       title: "Home",
-      description: "A warm overview of your active capsules, upcoming unseals, and recent memories."
-    }],
-    ["Preserve a Moment", {
+      description:
+        "A warm overview of your active capsules, upcoming unseals, and recent memories.",
+    },
+    {
       title: "Preserve a Moment",
-      description: "Create a new capsule — write, upload, and set a future unseal date."
-    }],
-    ["Edit Your Moment", {
+      description:
+        "Create a new capsule — write, upload, and set a future unseal date.",
+    },
+    {
       title: "Edit Your Moment",
-      description: "Edit capsule content, change unlock date, or update attachments before sealing."
-    }],
-    ["My Moments", {
+      description:
+        "Edit capsule content, change unlock date, or update attachments before sealing.",
+    },
+    {
       title: "My Moments",
-      description: "Access your saved and sealed capsules — view, edit, or reopen."
-    }],
-  ]);
+      description:
+        "Access your saved and sealed capsules — view, edit, or reopen.",
+    },
+  ];
 
   /* ==========================================
             HEADER RENDERING LOGIC
    ========================================== */
 
-  function renderHeaderInfo(title) {
-    const pageHeaderContainer = document.getElementById("pageHeader");
-    const rootElement = document.documentElement; // For dataset access
+  const pageHeaderContainer = document.getElementById("pageHeader");
 
+  function renderHeaderInfo(title) {
     if (!pageHeaderContainer) return;
 
     // Checks static map first
-    const page = HEADERS.get(title);
+    const page = HEADERS.find((c) => c.title === title);
 
     if (page) {
       pageHeaderContainer.innerHTML = `
@@ -44,22 +47,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // If not static, check for dynamic overrides from PHP
     else {
-      const { title: dynamicTitle, description: dynamicDesc = "" } = rootElement.dataset;
+      const dynamicTitle = document.documentElement.dataset.title;
+      const dynamicDesc = document.documentElement.dataset.description;
 
       if (dynamicTitle) {
-        pageHeaderContainer.innerHTML = `
-          <h2>${dynamicTitle}</h2>
-          <small style="color: var(--color-gray)">${dynamicDesc}</small>
-        `;
+        container.innerHTML = `
+                <h2>${dynamicTitle}</h2>
+                <small style="color: var(--color-gray)">${
+                  dynamicDesc || ""
+                }</small>
+            `;
       } else {
         pageHeaderContainer.innerHTML = `<p>Info not found</p>`;
       }
     }
   }
 
+  const titleFromPHP = document.documentElement.dataset.title;
+
   // Initial call for header
   if (pageHeaderContainer) {
-    renderHeaderInfo(rootElement.dataset.title);
+    renderHeaderInfo(titleFromPHP);
   }
 
   /* ==========================================
@@ -102,8 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
               const sy = (img.height - size) / 2;
 
               ctx.drawImage(
-                img, sx, sy, size, size, // Source (center crop)
-                0, 0, canvas.width, canvas.height // Destination (full canvas)
+                img,
+                sx,
+                sy,
+                size,
+                size, // Source (center crop)
+                0,
+                0,
+                canvas.width,
+                canvas.height // Destination (full canvas)
               );
             };
             img.src = e.target.result;
@@ -136,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function filterMoments(status) {
       const isSealed = status === "sealed";
-      
+
       allMoments.forEach((moment) => {
         // Use a single line to determine display style
         const display = moment.dataset.status === status ? "block" : "none";
@@ -146,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const editBtn = moment.querySelector("a.action");
         if (editBtn) {
           // Edit button is only visible for 'sealed' moments that are currently being shown
-          editBtn.style.display = (isSealed && display === "block") ? "" : "none";
+          editBtn.style.display = isSealed && display === "block" ? "" : "none";
         }
       });
     }
@@ -176,7 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
                POPUP/MODAL LOGIC
      ========================================== */
 
-
   // Uses event delegation for better performance and future-proofing
   document.body.addEventListener("click", (e) => {
     // Check for Open Button
@@ -196,11 +210,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeButton) {
       e.preventDefault();
       // Find the closest parent with the modal class
-      const modal = closeButton.closest(".delete-modal"); 
+      const modal = closeButton.closest(".delete-modal");
       if (modal) {
         modal.style.display = "none";
       }
     }
   });
-
 });
