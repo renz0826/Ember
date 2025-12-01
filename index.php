@@ -1,29 +1,30 @@
 <?php
-// set a session variable to mark user as logged in
+
+// Set a session variable to mark user as logged in
 session_start();
 
-// includes head
+// Includes head
 require_once __DIR__ . '/includes/head.php';
 require_once __DIR__ . '/components/button.php';
 
 $username = "";
 $message = "";
 
-// check if the form was submitted
+// Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // get and sanitize input data
+    // Get and sanitize input data
     $username = htmlspecialchars($_POST['username'] ?? '');
     $password = htmlspecialchars($_POST['password'] ?? '');
     
-    // basic Mock Authentication
+    // Basic Mock Authentication
     if (empty($username) || empty($password)) {
     } elseif ($username === "user" && $password === "password") {
         // set session variable to mark user as logged in
         $_SESSION['loggedin'] = true;
         $_SESSION['username'] = $username;
         
-        // redirect to home page
+        // Redirect to home page
         header("Location: pages/home.php");
         exit();
     }
@@ -41,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <!-- container for loading screen -->
+    <!-- Container for loading screen -->
     <div id="loading-screen">
         <div class="loader-content">
             <img src="assets/images/logo-main.png" alt="" class="loader-logo">
@@ -50,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <!-- container for login input fields -->
+    <!-- Container for login input fields -->
     <div class="background-container">
         <div class="login">
             <img src="assets/images/logo-typo.png" alt="Ember Logo" class="logo">
