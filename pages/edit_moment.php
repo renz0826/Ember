@@ -80,12 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </head>
 
 <body>
-    <div class="left">
+    <section class="left">
         <?php 
             // Include main site navigation component
             require_once __DIR__ . '/../components/nav.php'; 
         ?>
-    </div>
+    </section>
     
     <main>
         <section class="right">
