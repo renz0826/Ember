@@ -89,12 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <main>
         <section class="right">
-            <div class="top">
+            <section class="top">
                 <?php 
                     // Include page header component
                     require_once __DIR__ . '/../components/header.php'; 
                 ?>
-            </div>
+            </section>
             
             <?php if (!empty($message)): ?>
                 <div class="message-box error"><?= htmlspecialchars($message) ?></div>

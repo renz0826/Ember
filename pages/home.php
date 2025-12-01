@@ -1,16 +1,11 @@
 <?php
 
-// includes the head
+// Include necessary dependencies
 require_once __DIR__ . '/../includes/head.php';
+require_once __DIR__ . '/../components/button.php'; // Provides renderReferenceButton
+require_once __DIR__ . '/../components/calendar.php'; // Provides renderCalendar
+require_once __DIR__ . '/../components/moment.php'; // Provides renderRecentlySealed
 
-// includes the button component
-require_once __DIR__ . '/../components/button.php';
-
-// include the calendar component
-require_once __DIR__ . '/../components/calendar.php';
-
-// include the moment component
-require_once __DIR__ . '/../components/moment.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,33 +15,55 @@ require_once __DIR__ . '/../components/moment.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Home - Ember </title>
-</head>
+    </head>
 
 <body>
-    <div class="left">
-        <?php require_once __DIR__ . '/../components/nav.php';?>
-    </div>
+    <section class="left">
+        <?php 
+            // Include main site navigation component
+            require_once __DIR__ . '/../components/nav.php';
+        ?>
+    </section>
+    
     <main>
-        <div class="right">
-            <div class="top">
-                <?php require_once __DIR__ . '/../components/header.php'; ?>
-            </div>
+        <section class="right">
+            
+            <section class="top">
+                <?php 
+                    // Include page header component
+                    require_once __DIR__ . '/../components/header.php'; 
+                ?>
+            </section>
 
-            <div class="bottom">
-                <?php require_once __DIR__ . '/../components/nav.php';?>
-                <div class="bottom_left">
+            <section class="bottom">
+                
+                <section class="bottom_left">
                     <h2> Upcoming Moments </h2>
-                    <?php require_once __DIR__ . '/../components/capsule.php'; ?>
-                </div>
-                <div class="bottom_right">
+                    <?php 
+                        // Content for upcoming moments (e.g., list or container)
+                        require_once __DIR__ . '/../components/capsule.php'; 
+                    ?>
+                </section>
+                
+                <section class="bottom_right">
                     <?php renderCalendar(); ?>
-                    <?php renderReferenceButton('Preserve a Moment', 'preserve_moment.php', 'button', '', '/Ember/assets/icons/icon-preserve-white.svg'); ?>
+                    
+                    <?php 
+                        renderReferenceButton(
+                            'Preserve a Moment', 
+                            'preserve_moment.php', 
+                            'button', 
+                            '', 
+                            '/Ember/assets/icons/icon-preserve-white.svg'
+                        ); 
+                    ?>
+                    
                     <?php renderRecentlySealed($conn); ?>
-                </div>
+                </section>
 
-            </div>
+            </section>
 
-        </div>
+        </section>
 
     </main>
 </body>
