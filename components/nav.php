@@ -32,7 +32,7 @@ require_once __DIR__ . '/../includes/head.php';
 <!-- <html> tag reflecting the current page title and page description -->
 <html 
     lang="en" 
-    data-title="<?= htmlspecialchars($currentTitle) ?>"   
+    data-title="<?= htmlspecialchars($currentTitle ?? '') ?>"   
     data-description="<?= htmlspecialchars($pageDescriptionOverride ?? '') ?>"
 >
 
