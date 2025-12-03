@@ -127,6 +127,7 @@ header {
   border-radius: 14px;
   padding: 14px;
   text-align: center;
+  color: var(--color-white);
 }
 
 .moment_container {
@@ -147,6 +148,10 @@ header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 14px;
+}
+
+.moment_top a {
+  color: var(--color-white);
 }
 
 .actions {
@@ -173,6 +178,7 @@ header {
   display: flex;
   gap: 24px;
   align-items: center;
+  color: var(--color-white);
 }
 
 .recent_moment_bottom {
