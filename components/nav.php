@@ -36,11 +36,6 @@ require_once __DIR__ . '/../includes/head.php';
     data-description="<?= htmlspecialchars($pageDescriptionOverride ?? '') ?>"
 >
 
-<head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="/Ember/assets/css/components.css" />
-    </head>
-
 <body>
 
     <!-- Renders the nav bar -->
