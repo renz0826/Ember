@@ -1,5 +1,5 @@
 /* ==========================================
-        PART 1: GOOGLE API CONFIGURATION
+           GOOGLE API CONFIGURATION
    ========================================== */
 
 const CLIENT_ID ="409681759338-7ei6hol6qsbfhakjbve1jp2mbg6ct9qk.apps.googleusercontent.com";
@@ -12,15 +12,15 @@ let gapiInited = false;
 let gisInited = false;
 
 /* ==========================================
-         PART 2: INITIALIZATION LOGIC
+           INITIALIZATION LOGIC
    ========================================== */
 
 // Triggers when window finishes loading
 window.onload = function () {
-  // 1. Init Custom Calendar
+  // Init Custom Calendar
   initCustomCalendar();
 
-  // 2. Init Google Libraries
+  // Init Google Libraries
   // Try-catches prevent crashing if scripts failed to load
   try {
     gapi.load("client", initializeGapiClient);
@@ -49,7 +49,7 @@ async function initializeGapiClient() {
 }
 
 /* ==========================================
-    PART 3: AUTHENTICATION & EVENT CREATION
+        AUTHENTICATION & EVENT CREATION
    ========================================== */
 
 async function handleAuthClick() {
@@ -172,13 +172,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================
-       PART 4: CUSTOM CALENDAR UI LOGIC
+           CUSTOM CALENDAR UI LOGIC
    ========================================== */
 
 function initCustomCalendar() {
   const monthYear = document.getElementById("month_year");
   const week = document.querySelector(".calendar_week");
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const grid = document.querySelector(".calendar_grid");
   const prevBtn = document.getElementById("prev");
   const nextBtn = document.getElementById("next");

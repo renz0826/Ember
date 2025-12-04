@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <form id="loginForm" action="" method="POST" novalidate>
                     <h2 class="welcome-text">WELCOME BACK</h2>
-                    <p class="subtitle">Enter your email and password to access your account</p>
+                    <p class="subtitle">Enter your username and password to access your account</p>
 
                     <?php if (!empty($message)): ?>
                     <div class="server-error">
