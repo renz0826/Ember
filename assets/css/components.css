@@ -196,7 +196,6 @@ header {
   flex-shrink: 0;
 }
 
-/* 2. Style the Main Image to fill the square */
 .moment_bottom .thumbnail_container img#thumbnail {
   width: 100%;
   height: 100%;
@@ -341,7 +340,7 @@ header {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: 20px 0; /* Spacing between image and text */
+  margin: 20px 0;
   padding: 0 10px;
 }
 
