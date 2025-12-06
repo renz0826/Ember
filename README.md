@@ -10,21 +10,21 @@
 
 ## 🚀 Features
 
-* **Preserve Moments:** Upload images and write stories to create a digital capsule.
-* **Time Capsule Logic:** Set a future "Open Date" for every memory.
-* **Visual Dashboard:** View upcoming moments and recently sealed items via a calendar interface.
-* **Moment Management:**
-    * **View:** Read descriptions and view full-size images of your moments.
-    * **Edit:** Update the "Open Date" if you wish to extend the seal time.
-    * **Delete:** Remove moments and automatically clean up associated image files from the server.
-* **Sorting:** Filter moments by "Sealed" or "Unsealed" status.
+- **Preserve Moments:** Upload images and write stories to create a digital capsule.
+- **Time Capsule Logic:** Set a future "Open Date" for every memory.
+- **Visual Dashboard:** View upcoming moments and recently sealed items via a calendar interface.
+- **Moment Management:**
+  - **View:** Read descriptions and view full-size images of your moments.
+  - **Edit:** Update the "Open Date" if you wish to extend the seal time.
+  - **Delete:** Remove moments and automatically clean up associated image files from the server.
+- **Sorting:** Filter moments by "Sealed" or "Unsealed" status.
 
 ## 🛠️ Technology Stack
 
-* **Backend:** PHP (Native)
-* **Database:** MySQL
-* **Frontend:** HTML5, CSS, JavaScript
-* **Architecture:** Component-based (Separated headers, nav, and button logic)
+- **Backend:** PHP (Native)
+- **Database:** MySQL
+- **Frontend:** HTML5, CSS, JavaScript
+- **Architecture:** Component-based (Separated headers, nav, and button logic)
 
 ## 📂 Project Structure
 
@@ -72,14 +72,9 @@ CREATE TABLE moments (
 
 ## 👤 Authors
 
-* **Renz Clyd Bedonia** - *Project Manager*
-* **Mary Dawn Alido** - *Fronted Developer*
-* **Joseph Junel Reyes** - *Fronted Developer*
-* **Frandolph Joseph Guadalupe** - *Backend Developer*
-* **Gem Adrian Candaganan** - *Backend Developer*
-* **John Mark Panganiban** - *Database Manager*
-
-
-├── view_moment.php     # Detailed view of a specific moment
-├── my_moments.php      # List view of all moments
-└── ...
+- **Renz Clyd Bedonia** - _Project Manager_
+- **Mary Dawn Alido** - _Fronted Developer_
+- **Joseph Junel Reyes** - _Fronted Developer_
+- **Frandolph Joseph Guadalupe** - _Backend Developer_
+- **Gem Adrian Candaganan** - _Backend Developer_
+- **John Mark Panganiban** - _Database Manager_
